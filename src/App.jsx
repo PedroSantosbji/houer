@@ -7,11 +7,13 @@ const sections = [
   { id: "admin", label: "4. Administração de Entidades" },
   { id: "roles", label: "5. Papéis e Responsabilidades" },
   { id: "workflow", label: "6. Fluxo End-to-End" },
-  { id: "statemachine", label: "7. Máquina de Estados" },
-  { id: "doclifecycle", label: "8. Ciclo de Vida de Documentos" },
-  { id: "signatures", label: "9. Arquitetura de Assinaturas" },
-  { id: "traceability", label: "10. Portal de Rastreabilidade" },
-  { id: "scenario", label: "11. Cenário de Exemplo" },
+  { id: "documents", label: "7. Documentos e Formulários" },
+  { id: "codification", label: "8. Codificação de Documentos" },
+  { id: "statemachine", label: "9. Máquina de Estados" },
+  { id: "doclifecycle", label: "10. Ciclo de Vida de Documentos" },
+  { id: "signatures", label: "11. Arquitetura de Assinaturas" },
+  { id: "traceability", label: "12. Portal de Rastreabilidade" },
+  { id: "scenario", label: "13. Cenário de Exemplo" },
 ];
 
 const T = {
@@ -21,20 +23,28 @@ const T = {
   highlight: "#eef2ff", highlightBorder: "#c7d2fe", highlightText: "#3730a3",
   accent: "#4f46e5", accentLight: "#eef2ff",
   tableHead: "#f1f5f9", tableHeadText: "#475569", rowBorder: "#f1f5f9",
+  green: "#059669", greenLight: "#ecfdf5",
+  orange: "#b45309", orangeLight: "#fffbeb",
+  red: "#dc2626", redLight: "#fef2f2",
 };
 
 const content = {
   summary: {
     title: "1. Resumo Executivo",
     body: [
-      { type: "paragraph", text: "O Sistema de Gestão de Inspeções é uma plataforma enterprise multicanal projetada para orquestrar fluxos complexos de inspeção técnica, desde a criação de demandas até a emissão de certificados digitais com validade jurídica. O sistema opera em plataformas complementares: aplicação web responsiva multi-papel, aplicativo mobile offline-first e portais dedicados ao cliente e a auditores." },
-      { type: "paragraph", text: "O produto envolve múltiplos inspetores por especialidade com execução sequencial, motor de workflows com máquina de estados, motor de checklists dinâmicos, geração automatizada de documentos, fluxo multi-nível de assinaturas ICP-Brasil e um Portal de Rastreabilidade acessível a órgãos reguladores." },
-      { type: "highlight", text: "O objetivo central é garantir rastreabilidade completa, conformidade técnica e institucional em cada inspeção realizada, com emissão de certificados digitais ICP-Brasil e cadeia de evidências auditável por órgãos reguladores como INMETRO e ANTT." },
+      { type: "paragraph", text: "O Sistema de Gestão de Inspeções é uma plataforma enterprise multicanal aderente ao PQ-08, ISO 17020 e aos procedimentos PQ-12, PQ-13 e PQ-14. Orquestra fluxos completos de inspeção técnica — desde a análise crítica de contratos até a emissão de certificados digitais com validade jurídica — garantindo rastreabilidade formal de todos os artefatos gerados." },
+      { type: "highlight", text: "Mudança central de mentalidade: no modelo atual, o código identifica o documento. No sistema, Código + Status + Versão = vida do documento. Toda codificação é automática, todo versionamento é imutável, toda evidência é rastreável." },
       { type: "metrics", items: [
         { label: "Plataformas", value: "4" },
         { label: "Papéis de usuário", value: "6" },
-        { label: "Tipos de documento", value: "7" },
-        { label: "Níveis de assinatura", value: "4+" },
+        { label: "Formulários (FORs)", value: "10+" },
+        { label: "Tipos de inspeção", value: "3" },
+      ]},
+      { type: "subtitle", text: "Tipos de Inspeção Suportados" },
+      { type: "table", headers: ["Tipo", "Checklist", "Rel. Visita", "Rel. Parcial", "Não Conformidade", "Rel. Final", "Certificado"], rows: [
+        ["Projeto (PQ-12)", "✓ FOR-032", "—", "✓ FOR-028", "✓ FOR-029", "✓ FOR-030", "✓ FOR-031"],
+        ["Obra (PQ-13)", "✓ FOR-032", "✓ FOR-027", "✓ FOR-028", "✓ FOR-029", "✓ FOR-030", "✓ FOR-031"],
+        ["Operação (PQ-14)", "✓ FOR-032", "✓ FOR-027", "✓ FOR-028", "✓ FOR-029", "✓ FOR-030", "✓ FOR-031"],
       ]},
     ],
   },
@@ -45,29 +55,32 @@ const content = {
       { type: "table", headers: ["Plataforma", "Usuários", "Função Principal"], rows: [
         ["Web Responsivo", "Gestora, Coordenador, RT, Inspetor", "Configuração, controle de fluxo, validação e monitoramento"],
         ["Mobile App (iOS/Android)", "Inspetor", "Execução de inspeções offline, preenchimento de checklists, sincronização"],
-        ["Portal do Cliente", "Cliente externo", "Visualização de relatórios, aprovação ou solicitação de ajustes"],
+        ["Portal do Cliente", "Cliente externo", "Revisão do Plano de Inspeção, resposta ao RN e aprovação de relatórios"],
         ["Portal de Rastreabilidade", "Auditores, INMETRO, ANTT", "Acesso à cadeia de evidências via link seguro ou QR Code"],
       ]},
       { type: "subtitle", text: "2.2 Interações Principais" },
       { type: "flow", steps: [
-        "Gestora cria a demanda com todas as informações: contrato, escopo, prazo, inspetores designados por especialidade",
-        "Coordenador recebe notificação e cria o Plano de Inspeção a partir de uma boneca (template)",
-        "Inspetores executam sequencialmente, cada um na sua especialidade",
-        "Todos os checks concluídos disparam fluxo de validação",
-        "Coordenador e RT validam tecnicamente",
-        "Sistema gera Relatório Parcial consolidado",
-        "Cliente revisa e aprova (ou solicita ajustes)",
-        "Assinaturas ICP-Brasil coletadas de todos — Sistema gera Relatório Final e Certificado",
-        "Cadeia de evidências publicada no Portal de Rastreabilidade",
+        "Gestora cria a demanda: armazena documentação contratual completa (Carta convite, OS, Contrato, Proposta Técnica/Comercial, Edital, PER) e solicita emissão de ART pelos inspetores",
+        "Sistema gera automaticamente FOR-022 C (Análise Crítica de Contratos) e FOR-022 D (Análise de Completeza da Documentação) para preenchimento",
+        "Coordenador recebe notificação, cria o Plano de Inspeção (FOR-023) a partir de uma boneca e define os inspetores por especialidade",
+        "Inspetores executam de forma concomitante, cada um na sua especialidade, preenchendo FOR-032 e gerando evidências",
+        "Não conformidades identificadas geram FOR-029 automaticamente, vinculado ao item do checklist",
+        "Coordenador e RT validam — FOR-028 (Relatório Parcial) é gerado consolidando todas as especialidades",
+        "Cliente recebe o Plano de Inspeção para revisar/aprovar e o FOR-029 para responder com tratativas",
+        "Após aprovação do cliente, assinaturas ICP-Brasil são coletadas e sistema gera FOR-030 (Relatório Final) e FOR-031 (Certificado)",
+        "Cadeia de evidências publicada no Portal de Rastreabilidade com QR Code",
       ]},
-      { type: "subtitle", text: "2.3 Princípios de Design" },
+      { type: "subtitle", text: "2.3 O que muda entre os tipos de inspeção" },
+      { type: "highlight", text: "O fluxo é sempre o mesmo. O que muda entre Projeto, Obra e Operação é o tipo de evidência coletada: Projeto gera memoriais e desenhos técnicos; Obra gera registros fotográficos de campo e medições; Operação gera avaliação de indicadores e desempenho. O sistema adapta automaticamente os campos do checklist conforme o tipo de inspeção selecionado." },
+      { type: "subtitle", text: "2.4 Princípios de Design" },
       { type: "list", items: [
+        "Codificação automática: o sistema gera o código do documento — o usuário nunca digita",
+        "Versionamento obrigatório e imutável: nenhuma versão é sobrescrita, sempre cria nova",
+        "Cadeia documental vinculada: FOR-032 → FOR-027 → FOR-028 → FOR-030 → FOR-031",
+        "Não conformidade rastreada: FOR-029 sempre vinculado ao item do checklist que originou",
         "Offline-first: o inspetor nunca é bloqueado por falta de conectividade",
-        "Execução sequencial multi-inspetor: cada especialidade é liberada somente após a anterior ser concluída",
-        "Rastreabilidade completa: toda ação é registrada em trilha de auditoria imutável",
-        "Separação de responsabilidades: cada papel possui escopos bem definidos e não sobrepostos",
-        "Documentos como entidades versionadas: nenhum documento é sobrescrito, apenas retificado",
-        "Fluxo orquestrado por máquina de estados: transições previsíveis e auditáveis",
+        "Execução concomitante: múltiplos inspetores podem atuar em paralelo por especialidade",
+        "Código + Status + Versão = vida completa do documento",
       ]},
     ],
   },
@@ -75,25 +88,27 @@ const content = {
   admin: {
     title: "4. Administração de Entidades",
     body: [
-      { type: "paragraph", text: "O módulo de Administração centraliza o gerenciamento de todos os atores do sistema. É operado por um perfil administrativo com acesso irrestrito às entidades da plataforma." },
-      { type: "subtitle", text: "4.1 Gestão de Usuários e Perfis" },
+      { type: "paragraph", text: "O módulo de Administração centraliza o gerenciamento de todos os atores e entidades do sistema, incluindo o repositório de documentação contratual de cada projeto." },
+      { type: "subtitle", text: "4.1 Gestão de Usuários" },
       { type: "table", headers: ["Entidade", "Campos Principais", "Ações Disponíveis"], rows: [
-        ["Inspetor", "Nome, CREA/CAU, especialidades, localização, disponibilidade", "Cadastrar, editar, ativar/inativar, vincular a coordenador"],
+        ["Inspetor", "Nome, CREA/CAU, especialidades, ART vigente, localização", "Cadastrar, editar, ativar/inativar, vincular a coordenador, controlar ART"],
         ["Coordenador", "Nome, credenciais, área de atuação, rede de inspetores", "Cadastrar, editar, definir rede de inspetores"],
-        ["Responsável Técnico (RT)", "Nome, registro profissional, especialidade, validade", "Cadastrar, editar, validar registro, vincular a projetos"],
-        ["Gestor de Projetos", "Nome, permissões, projetos sob responsabilidade", "Cadastrar, editar, definir escopo de acesso"],
-        ["Auditor Externo", "Nome, órgão, credenciais, nível de acesso", "Cadastrar, emitir link/QR Code, definir escopo de consulta"],
+        ["Responsável Técnico (RT)", "Nome, registro profissional, especialidade, validade", "Cadastrar, editar, validar registro"],
+        ["Gestor de Projetos / Contratos", "Nome, permissões, projetos sob responsabilidade", "Cadastrar, editar, definir escopo de acesso"],
+        ["Auditor Externo", "Nome, órgão, credenciais, nível de acesso", "Cadastrar, emitir credencial, definir escopo de consulta"],
       ]},
-      { type: "subtitle", text: "4.2 Gestão de Projetos (pelo Gestor)" },
+      { type: "subtitle", text: "4.2 Gestão de Projetos" },
+      { type: "paragraph", text: "Ao criar um projeto, o sistema solicita o upload de toda a documentação contratual e de apoio. Essa documentação fica vinculada ao projeto e é referenciada em todos os documentos gerados." },
       { type: "list", items: [
-        "Criação do projeto com nome, descrição, cliente vinculado e código interno",
-        "Upload e gestão de contrato: documento, número, vigência, valor e cláusulas especiais",
-        "Definição de escopo técnico: tipos de inspeção, normas aplicáveis, critérios de aprovação",
-        "Atribuição de múltiplos inspetores por especialidade e definição da ordem sequencial",
-        "Definição de prazos globais e marcos intermediários",
-        "Configuração de SLAs e alertas automáticos por etapa",
-        "Campos personalizáveis por tipo de projeto",
-        "Painel de acompanhamento em tempo real",
+        "Carta convite",
+        "Termo de referência",
+        "Ordem de Serviço (OS) — base para geração automática do código dos documentos",
+        "Contrato assinado",
+        "Proposta Técnica e Comercial",
+        "Edital (quando aplicável)",
+        "PER e outros documentos de apoio",
+        "ART dos inspetores designados (sistema solicita e controla validade)",
+        "Tipo de inspeção: Projeto (PQ-12), Obra (PQ-13) ou Operação (PQ-14)",
       ]},
       { type: "subtitle", text: "4.3 Estrutura Hierárquica" },
       { type: "org_chart" },
@@ -103,251 +118,354 @@ const content = {
     title: "5. Papéis e Responsabilidades",
     body: [
       { type: "roles", items: [
-        { role: "Gestora de Projetos", icon: "👩‍💼", color: "#4f46e5", platforms: ["Web"],
-          permissions: ["Criar e gerenciar demandas com informações completas","Vincular contrato, escopo técnico e cliente ao projeto","Designar múltiplos inspetores por especialidade e ordem sequencial","Monitorar progresso e SLAs em tempo real","Visualizar dashboards de desempenho","Gerar relatórios gerenciais"],
-          restrictions: ["Não executa validações técnicas","Não edita planos de inspeção ou checklists"] },
+        { role: "Gestora de Projetos / Gestora de Contratos", icon: "👩‍💼", color: "#4f46e5", platforms: ["Web"],
+          permissions: [
+            "Criar plano de inspeção junto ao Coordenador",
+            "Criar e gerenciar demandas com informações completas",
+            "Armazenar documentação contratual completa no projeto",
+            "Vincular contrato, OS, escopo técnico e cliente ao projeto",
+            "Solicitar emissão de ART pelos inspetores designados",
+            "Designar múltiplos inspetores por especialidade",
+            "Monitorar progresso e SLAs em tempo real",
+            "Visualizar dashboards de desempenho e gerar relatórios gerenciais",
+            "Solicitar complementações a inspetor(es) específico(s)",
+          ],
+          restrictions: ["Não executa validações técnicas"] },
         { role: "Coordenador de Inspeção", icon: "🗂️", color: "#7c3aed", platforms: ["Web"],
-          permissions: ["Receber notificação de projeto atribuído pela Gestora","Criar o Plano de Inspeção a partir de uma boneca (template)","Personalizar checklist e definir ordem sequencial dos inspetores","Realizar primeira validação técnica de todos os inspetores","Aprovar ou rejeitar inspeções individuais","Solicitar complementações a inspetor(es) específico(s)"],
-          restrictions: ["Não atribui inspetores a projetos","Não tem acesso ao portal do cliente"] },
+          permissions: [
+            "Receber notificação de projeto e criar Plano de Inspeção (FOR-023) a partir de boneca",
+            "Preencher e assinar FOR-022 D (Análise de Completeza da Documentação)",
+            "Personalizar checklist (FOR-032) por especialidade",
+            "Definir inspetores e modo de execução (concomitante ou sequencial)",
+            "Validar checklists, evidências e relatórios de todos os inspetores",
+            "Aprovar ou rejeitar para inspetor específico",
+            "Assinar FOR-023, FOR-028, FOR-029 e FOR-030",
+          ],
+          restrictions: ["Não atribui inspetores a projetos (papel da Gestora)", "Não tem acesso ao portal do cliente"] },
         { role: "Responsável Técnico (RT)", icon: "🏛️", color: "#1d4ed8", platforms: ["Web"],
-          permissions: ["Validar tecnicamente inspeções aprovadas pelo coordenador","Aprovar ou rejeitar com justificativa técnica","Emitir parecer técnico consolidado","Assinar via ICP-Brasil no Relatório Final","Acesso a histórico completo de inspeções"],
-          restrictions: ["Não edita checklists","Não acessa portal do cliente"] },
+          permissions: [
+            "Preencher e assinar FOR-022 C (Análise Crítica de Contratos)",
+            "Validar tecnicamente inspeções aprovadas pelo Coordenador",
+            "Emitir parecer técnico consolidado",
+            "Assinar FOR-023, FOR-028, FOR-029, FOR-030 e FOR-031",
+            "Acesso a histórico completo de inspeções",
+          ],
+          restrictions: ["Não edita checklists", "Não acessa portal do cliente"] },
         { role: "Inspetor", icon: "🔍", color: "#059669", platforms: ["Web", "Mobile"],
-          permissions: ["Executar inspeções na sua especialidade (ex: Geometria, Drenagem, Pavimentação)","Aguardar liberação sequencial do sistema antes de iniciar","Preencher checklists da sua especialidade (web e mobile)","Capturar fotos, vídeos e documentos como evidência","Registrar localização GPS","Operar completamente offline no mobile","Assinar digitalmente via ICP-Brasil no Relatório Final"],
-          restrictions: ["Não inicia antes de ser liberado na ordem sequencial","Não valida inspeções de outros inspetores","Não acessa dados de outros inspetores"] },
-        { role: "Cliente", icon: "🏢", color: "#b45309", platforms: ["Portal do Cliente"],
-          permissions: ["Visualizar relatório parcial consolidado de todos os inspetores","Aprovar inspeção (dispara fluxo ICP-Brasil)","Solicitar ajustes com comentários detalhados","Baixar documentos finais aprovados","Assinar relatório final e certificado via ICP-Brasil"],
-          restrictions: ["Não acessa dados de outras inspeções","Não interage com fluxo interno","Participa apenas após todas as validações internas concluídas"] },
+          permissions: [
+            "Emitir ART vinculada ao projeto (solicitada pela Gestora)",
+            "Executar inspeções na sua especialidade de forma concomitante",
+            "Preencher FOR-032 (Checklist) e FOR-027 (Relatório de Visita, se Obra/Operação)",
+            "Registrar não conformidades que alimentam o FOR-029",
+            "Capturar fotos, vídeos, medições e GPS como evidência",
+            "Operar completamente offline no mobile",
+            "Assinar FOR-023, FOR-027, FOR-028, FOR-029 e FOR-030",
+          ],
+          restrictions: ["Não valida inspeções de outros inspetores", "Não acessa dados de outros inspetores"] },
+        { role: "Cliente / Contratante", icon: "🏢", color: "#b45309", platforms: ["Portal do Cliente"],
+          permissions: [
+            "Receber e revisar/aprovar o FOR-023 (Plano de Inspeção)",
+            "Assinar a Ordem de Serviço e Contrato de Inspeção",
+            "Receber FOR-029 (Relatório de Não Conformidade) e responder com tratativas",
+            "Visualizar e aprovar Relatório Parcial (FOR-028)",
+            "Assinar Relatório Final (FOR-030) e Certificado (FOR-031) via ICP-Brasil",
+            "Baixar documentos finais aprovados",
+          ],
+          restrictions: ["Não acessa dados de outras inspeções", "Não interfere no fluxo interno"] },
         { role: "Auditor / Órgão Regulador", icon: "🔎", color: "#0369a1", platforms: ["Portal de Rastreabilidade"],
-          permissions: ["Acessar cadeia de evidências via link seguro ou QR Code","Visualizar documentos, assinaturas e trilha de auditoria","Verificar autenticidade de certificados","Exportar relatório de auditoria","Filtrar por período, inspetor, especialidade ou projeto"],
-          restrictions: ["Acesso somente leitura","Não interfere no fluxo de inspeções","Acesso limitado ao escopo definido pelo Administrador"] },
+          permissions: [
+            "Acessar cadeia de evidências via link seguro ou QR Code",
+            "Verificar autenticidade de certificados e assinaturas ICP-Brasil",
+            "Consultar todos os FORs gerados em uma inspeção",
+            "Exportar relatório de auditoria",
+          ],
+          restrictions: ["Acesso somente leitura", "Não interfere no fluxo de inspeções"] },
       ]},
     ],
   },
   workflow: {
     title: "6. Fluxo End-to-End",
     body: [
-      { type: "subtitle", text: "6.1 Modelo Multi-Inspetor Sequencial" },
-      { type: "highlight", text: "Uma inspeção pode envolver múltiplos inspetores, cada um responsável por uma especialidade (ex: Geometria, Terraplenagem, Drenagem, Pavimentação). A execução é sequencial: o sistema libera o próximo inspetor somente após o anterior concluir e submeter sua parte. Todos os checks devem estar completos antes de o Relatório Parcial avançar para o cliente. As assinaturas ICP-Brasil de todos os inspetores são coletadas apenas no Relatório Final." },
-      { type: "table", headers: ["Etapa", "Responsável", "Condição de Avanço"], rows: [
-        ["Execução Inspetor 1", "Inspetor Especialista A (ex: Geometria)", "Submete checklist completo → libera Inspetor 2"],
-        ["Execução Inspetor 2", "Inspetor Especialista B (ex: Terraplenagem)", "Submete checklist completo → libera Inspetor 3"],
-        ["Execução Inspetor N", "Inspetor Especialista N (ex: Pavimentação)", "Submete checklist completo → todos concluídos"],
-        ["Validação Coordenador", "Coordenador", "Revisão consolidada de todos os checklists e evidências"],
-        ["Validação RT", "Responsável Técnico", "Aprovação técnica consolidada de todas as especialidades"],
-        ["Relatório Parcial", "Sistema", "Gerado após 100% dos inspetores submetidos e Coord. + RT aprovado"],
-        ["Assinaturas ICP-Brasil", "Todos os Inspetores + Coord. + RT + Cliente", "Coletadas somente no Relatório Final, após aprovação do cliente"],
-      ]},
-      { type: "subtitle", text: "6.2 Fluxo Normal (Caminho Feliz)" },
+      { type: "subtitle", text: "6.1 Modelo Multi-Inspetor Concomitante" },
+      { type: "highlight", text: "Múltiplos inspetores podem atuar em paralelo, cada um na sua especialidade (Geometria, Terraplenagem, Drenagem, Pavimentação etc.). Não há dependência de conclusão entre eles. O sistema aguarda que todos concluam para consolidar no Relatório Parcial. Se algum inspetor identificar não conformidade, o FOR-029 é gerado automaticamente vinculado ao item do checklist." },
+      { type: "subtitle", text: "6.2 Fluxo Normal — Caminho Feliz" },
       { type: "workflow", steps: [
-        { num: "01", actor: "Gestora", action: "Cria a demanda de inspeção", detail: "Preenche todas as informações: cliente, contrato, escopo técnico, normas aplicáveis, prazo. Designa inspetores por especialidade e define ordem sequencial", state: "Demanda Criada" },
-        { num: "02", actor: "Coordenador", action: "Recebe notificação e cria o Plano de Inspeção", detail: "Seleciona boneca base, personaliza o checklist e confirma a ordem de execução sequencial entre os inspetores", state: "Plano Criado" },
-        { num: "03", actor: "Inspetor 1", action: "Recebe notificação e executa sua especialidade", detail: "Preenche o checklist de sua especialidade, captura evidências e registra GPS. Opera offline se necessário", state: "Em Execução (Insp. 1)" },
-        { num: "04", actor: "Sistema", action: "Inspetor 1 submete — libera Inspetor 2", detail: "Após submissão, o sistema notifica automaticamente o próximo inspetor da fila sequencial", state: "Aguardando Insp. 2" },
-        { num: "05", actor: "Inspetor 2…N", action: "Executa sequencialmente até o último inspetor", detail: "Cada inspetor recebe notificação, executa sua especialidade e submete. O ciclo se repete até todos concluírem", state: "Em Execução (Insp. N)" },
-        { num: "06", actor: "Sistema", action: "Valida completude de todos os inspetores", detail: "Confirma que 100% dos inspetores submeteram seus checklists. Somente então libera para validação do Coordenador", state: "Processando" },
-        { num: "07", actor: "Coordenador", action: "Realiza validação técnica consolidada", detail: "Revisa respostas e evidências de todos os inspetores. Pode rejeitar para qualquer inspetor individualmente", state: "Validação Coordenador" },
-        { num: "08", actor: "RT", action: "Realiza validação técnica institucional", detail: "Valida aspectos técnicos de todas as especialidades. Emite parecer consolidado com log sistêmico", state: "Validação RT" },
-        { num: "09", actor: "Sistema", action: "Gera Relatório Parcial", detail: "Compila dados de todos os inspetores em documento estruturado com todas as evidências por especialidade", state: "Relatório Parcial Gerado" },
-        { num: "10", actor: "Cliente", action: "Revisa e aprova Relatório Parcial", detail: "Acessa portal, visualiza relatório consolidado de todos os inspetores e aprova. Dispara fluxo ICP-Brasil", state: "Aprovação do Cliente" },
-        { num: "11", actor: "Sistema + Todos os Signatários", action: "Coleta assinaturas ICP-Brasil", detail: "Todos os inspetores (na ordem de execução), Coordenador, RT e Cliente assinam digitalmente. Sistema gera Relatório Final e Certificado", state: "Finalizado" },
-        { num: "12", actor: "Sistema", action: "Publica no Portal de Rastreabilidade", detail: "QR Code e link único gerados com todas as assinaturas e evidências de cada especialidade", state: "Auditável" },
+        { num: "01", actor: "Gestora", action: "Cria a demanda e armazena documentação contratual", detail: "Upload de Carta convite, OS, Contrato, Proposta Técnica/Comercial, Edital, PER. Define tipo (Projeto/Obra/Operação), escopo, inspetores por especialidade e solicita emissão de ART. Sistema gera FOR-022 C e FOR-022 D para preenchimento.", state: "Demanda Criada" },
+        { num: "02", actor: "RT", action: "Preenche e assina FOR-022 C", detail: "Análise Crítica de Contratos: valida se o escopo contratual é tecnicamente viável e se a equipe designada é adequada.", state: "Análise Crítica OK" },
+        { num: "03", actor: "Coordenador", action: "Preenche FOR-022 D e cria Plano de Inspeção (FOR-023)", detail: "Análise de Completeza da Documentação. Seleciona boneca, personaliza checklist por especialidade, define modo concomitante. FOR-023 segue para assinatura de RT, Coordenador, Inspetores e Cliente.", state: "Plano Criado" },
+        { num: "04", actor: "Cliente", action: "Revisa e assina o FOR-023 (Plano de Inspeção)", detail: "Único momento em que o cliente interage antes da execução. Confirma escopo, metodologia e equipe da inspeção.", state: "Plano Aprovado" },
+        { num: "05", actor: "Inspetores (paralelo)", action: "Executam concomitantemente por especialidade", detail: "Cada inspetor preenche FOR-032 (Checklist) e, se Obra/Operação, FOR-027 (Relatório de Visita). Não conformidades identificadas geram FOR-029 automaticamente.", state: "Em Execução" },
+        { num: "06", actor: "Sistema", action: "Consolida quando todos os inspetores concluem", detail: "Confirma 100% de submissão. Agrupa checklists, evidências e eventuais FOR-029 por especialidade. Libera para validação do Coordenador.", state: "Processando" },
+        { num: "07", actor: "Coordenador", action: "Valida checklists e evidências de todos os inspetores", detail: "Pode aprovar consolidado ou rejeitar para inspetor específico. Assina FOR-028 (Relatório Parcial).", state: "Validação Coordenador" },
+        { num: "08", actor: "RT", action: "Valida tecnicamente e assina FOR-028", detail: "Análise consolidada de todas as especialidades. Emite parecer técnico. Assina FOR-028.", state: "Validação RT" },
+        { num: "09", actor: "Sistema", action: "Gera FOR-028 (Relatório Parcial) e FOR-029 (se houver NCs)", detail: "Consolida dados de todos os inspetores. Se houver não conformidades, FOR-029 é gerado em anexo e encaminhado ao cliente para preenchimento das tratativas.", state: "Relatório Parcial Gerado" },
+        { num: "10", actor: "Cliente", action: "Aprova FOR-028 e responde FOR-029 com tratativas", detail: "O cliente não aprova/rejeita o RN — ele preenche as tratativas. A aprovação do FOR-028 dispara o fluxo ICP-Brasil.", state: "Aprovação do Cliente" },
+        { num: "11", actor: "Todos os Signatários", action: "Assinaturas ICP-Brasil do FOR-030 e FOR-031", detail: "Todos os inspetores, Coordenador, RT e Cliente assinam digitalmente. Sistema gera Relatório Final (FOR-030) e Certificado (FOR-031).", state: "Finalizado" },
+        { num: "12", actor: "Sistema", action: "Publica no Portal de Rastreabilidade", detail: "Gera QR Code e tabela de rastreabilidade vinculando todos os FORs gerados na inspeção.", state: "Auditável" },
       ]},
-      { type: "subtitle", text: "6.3 Fluxo de Rejeição e Retrabalho" },
+      { type: "subtitle", text: "6.3 Fluxo de Rejeição" },
       { type: "rejection", steps: [
-        { from: "Cliente", action: "Rejeita relatório parcial com comentários", to: "Sistema" },
-        { from: "Sistema", action: "Cria ciclo de ajuste e notifica Coordenador", to: "Coordenador" },
-        { from: "Coordenador", action: "Direciona para o(s) inspetor(es) específico(s) ou faz ajuste direto", to: "Inspetor(es)" },
-        { from: "Inspetor(es)", action: "Realiza complementação individual por especialidade", to: "Sistema" },
-        { from: "Sistema", action: "Aguarda todos os afetados completarem, depois reinicia validação", to: "Coordenador" },
+        { from: "Coord./RT", action: "Rejeita checklist de inspetor específico com comentário", to: "Inspetor" },
+        { from: "Inspetor", action: "Corrige e resubmete — sistema incrementa versão automaticamente", to: "Coordenador" },
+        { from: "Coordenador", action: "Revalida e aprova — fluxo continua normalmente", to: "RT" },
+      ]},
+    ],
+  },
+  documents: {
+    title: "7. Documentos e Formulários",
+    body: [
+      { type: "subtitle", text: "7.1 Cadeia Documental Vinculada" },
+      { type: "highlight", text: "Cada documento da cadeia só pode existir se o anterior foi concluído. O sistema impede a geração de FOR-030 sem FOR-028 aprovado, e FOR-031 sem FOR-030 assinado. Essa dependência é automática e não pode ser contornada." },
+      { type: "flow", steps: [
+        "FOR-022 C/D → Análises iniciais (pré-execução obrigatória)",
+        "FOR-023 → Plano de Inspeção (aprovado pelo cliente antes da execução)",
+        "FOR-032 → Checklist por inspetor/especialidade (base de tudo)",
+        "FOR-027 → Relatório de Visita (apenas Obra e Operação)",
+        "FOR-029 → Não Conformidade (gerado automaticamente se NC identificada, vinculado ao item)",
+        "FOR-028 → Relatório Parcial (consolida todos os inspetores, não existe sem FOR-032 concluído)",
+        "FOR-030 → Relatório Final (só gera após FOR-028 aprovado e FOR-029 respondido)",
+        "FOR-031 → Certificado de Inspeção (só gera após FOR-030 assinado)",
+      ]},
+      { type: "subtitle", text: "7.2 Tabela Completa de Formulários" },
+      { type: "table", headers: ["Formulário", "Nome", "Gerado por", "Quem assina", "Quando"], rows: [
+        ["FOR-022 A/B", "Proposta Técnica e Comercial", "Gestora (upload)", "Rep. OIA + Rep. Contratante", "Ao criar o projeto"],
+        ["FOR-022 C", "Análise Crítica de Contratos", "Sistema (preenchido pelo RT)", "Responsável Técnico", "Antes do planejamento"],
+        ["FOR-022 D", "Análise de Completeza da Documentação", "Sistema (preenchido pelo Coord.)", "Coordenador", "Antes do planejamento"],
+        ["FOR-023", "Plano de Inspeção", "Coordenador (via boneca)", "RT + Coordenador + Inspetores + Cliente", "Antes da execução"],
+        ["FOR-027", "Relatório de Visita", "Inspetor (Obra/Operação)", "Inspetor + Responsável Obra", "Durante execução"],
+        ["FOR-028", "Relatório Parcial de Inspeção", "Sistema (automático)", "RT + Coordenador + Inspetores", "Após validação RT"],
+        ["FOR-029", "Relatório de Não Conformidade", "Sistema (automático por NC)", "RT + Coordenador + Inspetor", "Quando NC identificada"],
+        ["FOR-030", "Relatório Final de Inspeção", "Sistema (automático)", "RT + Coordenador + Inspetores (ICP)", "Após aprovação do cliente"],
+        ["FOR-031", "Certificado de Inspeção", "Sistema (automático)", "Responsável Técnico (ICP)", "Após FOR-030 assinado"],
+        ["FOR-032", "Checklist de Inspeção", "Sistema (via boneca)", "Inspetor (log sistêmico)", "Durante execução"],
+      ]},
+      { type: "subtitle", text: "7.3 Tratamento de Não Conformidades (FOR-029)" },
+      { type: "paragraph", text: "O FOR-029 é gerado automaticamente pelo sistema quando um inspetor marca um item do checklist como não conforme. Ele é sempre vinculado ao item e à evidência de origem — nunca existe de forma isolada." },
+      { type: "list", items: [
+        "O FOR-029 é encaminhado ao cliente junto com o FOR-028, em anexo ao Relatório Parcial",
+        "O cliente não aprova nem rejeita o RN — ele preenche as tratativas (ações corretivas previstas)",
+        "O sistema só libera o FOR-030 após o cliente ter respondido todas as tratativas do FOR-029",
+        "Cada versão do FOR-029 é registrada com quem alterou, quando e o quê mudou",
+        "A rastreabilidade da NC percorre: item do checklist → evidência fotográfica → RN → tratativa do cliente",
+      ]},
+    ],
+  },
+  codification: {
+    title: "8. Codificação de Documentos",
+    body: [
+      { type: "subtitle", text: "8.1 Estrutura do Código" },
+      { type: "highlight", text: "O usuário nunca digita o código do documento. O sistema monta automaticamente a partir dos dados do processo. Estrutura: CLIENTE - TIPO - PROPOSTA - OS - SEQ - DISCIPLINA - VERSÃO" },
+      { type: "table", headers: ["Campo", "Origem no sistema", "Exemplo", "Regra"], rows: [
+        ["CLIENTE", "Cadastro do cliente no projeto", "EPR", "Sigla do cliente, definida no cadastro"],
+        ["TIPO", "Tipo de documento selecionado", "RP", "CL, RV, RP, RN, RF, CI — nunca digitado"],
+        ["PROPOSTA", "Número da proposta do projeto", "0012025", "Herdado automaticamente do processo"],
+        ["OS", "Ordem de Serviço do projeto", "5532025", "Herdado automaticamente do processo"],
+        ["SEQ", "Sequencial por tipo + disciplina", "02", "Incremento automático — evita duplicidade"],
+        ["DISCIPLINA", "Especialidade do inspetor", "DRE", "Campo vinculado ao inspetor — nunca digitado"],
+        ["VERSÃO", "Versionamento automático", "V01", "V00 = primeiro envio, incrementa a cada revisão"],
+      ]},
+      { type: "subtitle", text: "8.2 Exemplo Real" },
+      { type: "paragraph", text: "Código de um Relatório Parcial gerado automaticamente pelo sistema:" },
+      { type: "code_example", code: "EPR-RP-0012025-5532025-02-DRE-V01", parts: [
+        { part: "EPR", label: "Cliente" },
+        { part: "RP", label: "Tipo (Rel. Parcial)" },
+        { part: "0012025", label: "Nº Proposta" },
+        { part: "5532025", label: "OS" },
+        { part: "02", label: "Sequencial (2º RP)" },
+        { part: "DRE", label: "Disciplina (Drenagem)" },
+        { part: "V01", label: "Versão (1ª revisão)" },
+      ]},
+      { type: "subtitle", text: "8.3 Controle de Versão" },
+      { type: "table", headers: ["Situação", "Ação do Sistema", "Versão Gerada"], rows: [
+        ["Primeiro envio do documento", "Cria versão inicial", "V00"],
+        ["Ajuste solicitado pelo Coordenador", "Bloqueia V00, cria nova versão", "V01"],
+        ["Ajuste solicitado pelo Cliente", "Bloqueia V01, cria nova versão", "V02"],
+        ["Nova resubmissão", "Bloqueia V02, cria nova versão", "V03"],
+      ]},
+      { type: "highlight", text: "Regra inviolável: o sistema nunca sobrescreve uma versão existente. Cada versão é imutável após submissão. A cadeia de versões é sempre preservada e visível na trilha de auditoria." },
+      { type: "subtitle", text: "8.4 Status do Documento" },
+      { type: "table", headers: ["Status", "Quem pode editar", "O que dispara"], rows: [
+        ["Rascunho", "Quem criou o documento", "Criação do registro no sistema"],
+        ["Submetido", "Travado para o inspetor", "Inspetor submete o checklist/relatório"],
+        ["Em revisão", "Apenas Coordenador ou RT", "Coordenador ou RT solicita ajuste"],
+        ["Aprovado", "Ninguém — somente leitura", "Coordenador ou RT aprova"],
+        ["Assinado", "Bloqueado — imutável", "Coleta de todas as assinaturas"],
+        ["Revisão solicitada", "Gera nova versão automaticamente", "Cliente solicita ajuste no portal"],
       ]},
     ],
   },
   statemachine: {
-    title: "7. Máquina de Estados",
+    title: "9. Máquina de Estados",
     body: [
-      { type: "paragraph", text: "Cada inspeção possui um estado bem definido que determina quais ações são permitidas, quem pode executá-las e quais transições estão disponíveis." },
+      { type: "paragraph", text: "Cada inspeção percorre estados bem definidos. O FOR-029 (Não Conformidade) tem seu próprio mini-fluxo dentro da inspeção, pendente e paralelo ao Relatório Parcial." },
       { type: "states", items: [
-        { label: "DEMANDA CRIADA", color: "#64748b", desc: "Gestora criou a demanda. Coordenador notificado para criar o Plano de Inspeção.", triggers: ["Coordenador cria Plano → PLANO_CRIADO", "Gestora cancela → CANCELADA"] },
-        { label: "PLANO CRIADO", color: "#4f46e5", desc: "Coordenador selecionou a boneca e personalizou o plano. Inspetor 1 notificado.", triggers: ["Inspetor 1 inicia → EM_EXECUÇÃO (Insp. 1)", "Gestora cancela → CANCELADA"] },
-        { label: "EM EXECUÇÃO (INSPETOR N)", color: "#7c3aed", desc: "Inspetor ativo preenchendo o checklist de sua especialidade.", triggers: ["Inspetor submete → próximo inspetor notificado ou PENDENTE_VALIDAÇÃO_COORD se for o último"] },
-        { label: "PENDENTE VALIDAÇÃO COORD.", color: "#b45309", desc: "Todos os inspetores submeteram. Aguardando análise do Coordenador.", triggers: ["Coordenador aprova → PENDENTE_VALIDAÇÃO_RT", "Coordenador rejeita → EM_AJUSTE (Inspetor)"] },
-        { label: "EM AJUSTE (INSPETOR)", color: "#dc2626", desc: "Inspetor(es) realizando correções solicitadas pelo Coordenador.", triggers: ["Inspetor(es) resubmete(m) → PENDENTE_VALIDAÇÃO_COORD"] },
-        { label: "PENDENTE VALIDAÇÃO RT", color: "#b45309", desc: "Aguardando análise e aprovação do Responsável Técnico.", triggers: ["RT aprova → RELATÓRIO_PARCIAL_GERADO", "RT rejeita → EM_AJUSTE (Coord.)"] },
-        { label: "EM AJUSTE (COORD.)", color: "#dc2626", desc: "Coordenador realizando ajustes solicitados pelo RT.", triggers: ["Coord. resubmete → PENDENTE_VALIDAÇÃO_RT"] },
-        { label: "RELATÓRIO PARCIAL GERADO", color: "#059669", desc: "Relatório parcial consolidado gerado. Enviado ao cliente.", triggers: ["Sistema envia ao cliente → PENDENTE_APROVAÇÃO_CLIENTE"] },
-        { label: "PENDENTE APROVAÇÃO CLIENTE", color: "#d97706", desc: "Cliente analisando o relatório parcial no portal.", triggers: ["Cliente aprova → COLETANDO_ASSINATURAS_ICP", "Cliente rejeita → EM_REVISÃO_CLIENTE"] },
-        { label: "EM REVISÃO (CLIENTE)", color: "#dc2626", desc: "Ciclo de ajuste iniciado por rejeição do cliente.", triggers: ["Coord. resubmete após ajustes → PENDENTE_VALIDAÇÃO_RT"] },
-        { label: "COLETANDO ASSINATURAS ICP", color: "#0369a1", desc: "Aprovação do cliente dispara coleta sequencial de assinaturas ICP-Brasil de todos os signatários.", triggers: ["Todas as assinaturas coletadas → FINALIZADO"] },
-        { label: "FINALIZADO", color: "#1e293b", desc: "Inspeção concluída. Relatório Final e Certificado assinados via ICP-Brasil.", triggers: ["Estado terminal — cadeia de evidências publicada"] },
-        { label: "CANCELADA", color: "#94a3b8", desc: "Inspeção cancelada pela Gestora. Auditoria preservada.", triggers: ["Estado terminal"] },
+        { label: "DEMANDA CRIADA", color: "#64748b", desc: "Gestora criou a demanda, documentação contratual armazenada. FOR-022 C e D aguardam preenchimento.", triggers: ["RT preenche FOR-022 C e Coord. preenche FOR-022 D → ANÁLISE_CRÍTICA_OK"] },
+        { label: "ANÁLISE CRÍTICA OK", color: "#4f46e5", desc: "FOR-022 C (RT) e FOR-022 D (Coord.) preenchidos e assinados. Coordenador cria Plano de Inspeção.", triggers: ["Coordenador publica FOR-023 → AGUARDANDO_APROVAÇÃO_PLANO"] },
+        { label: "AGUARDANDO APROVAÇÃO DO PLANO", color: "#7c3aed", desc: "FOR-023 enviado ao cliente para revisão e assinatura antes da execução.", triggers: ["Cliente assina FOR-023 → PLANO_APROVADO", "Coord. cancela → CANCELADA"] },
+        { label: "PLANO APROVADO", color: "#0369a1", desc: "FOR-023 assinado por RT, Coord., Inspetores e Cliente. Inspetores liberados para execução concomitante.", triggers: ["Todos os inspetores iniciam → EM_EXECUÇÃO"] },
+        { label: "EM EXECUÇÃO", color: "#7c3aed", desc: "Inspetores preenchendo FOR-032 (e FOR-027 se Obra/Operação) em paralelo. NCs geram FOR-029 automaticamente.", triggers: ["Todos os inspetores submetem → PENDENTE_VALIDAÇÃO_COORD"] },
+        { label: "PENDENTE VALIDAÇÃO COORD.", color: "#b45309", desc: "100% dos inspetores submeteram. Coordenador revisa e pode rejeitar para inspetor específico.", triggers: ["Coordenador aprova → PENDENTE_VALIDAÇÃO_RT", "Rejeita → EM_AJUSTE (Inspetor específico)"] },
+        { label: "EM AJUSTE (INSPETOR)", color: "#dc2626", desc: "Inspetor corrige o apontado. Sistema cria nova versão do checklist/relatório automaticamente.", triggers: ["Inspetor resubmete → PENDENTE_VALIDAÇÃO_COORD"] },
+        { label: "PENDENTE VALIDAÇÃO RT", color: "#b45309", desc: "Coordenador aprovou. RT valida tecnicamente e assina FOR-028.", triggers: ["RT aprova e assina → RELATÓRIO_PARCIAL_GERADO", "RT rejeita → EM_AJUSTE (Coord.)"] },
+        { label: "RELATÓRIO PARCIAL GERADO", color: "#059669", desc: "FOR-028 gerado e assinado. Se houver NCs, FOR-029 gerado em anexo. Ambos enviados ao cliente.", triggers: ["Sistema envia FOR-028 + FOR-029 ao cliente → PENDENTE_CLIENTE"] },
+        { label: "PENDENTE CLIENTE", color: "#d97706", desc: "Cliente deve aprovar FOR-028 e preencher tratativas no FOR-029 (se houver). Ambas as ações são necessárias.", triggers: ["Cliente aprova FOR-028 e responde FOR-029 → COLETANDO_ASSINATURAS_ICP", "Solicita ajuste → EM_REVISÃO_CLIENTE"] },
+        { label: "EM REVISÃO (CLIENTE)", color: "#dc2626", desc: "Coordenador + RT ajustam relatório. Versão incrementa automaticamente.", triggers: ["Coord. resubmete → PENDENTE_VALIDAÇÃO_RT"] },
+        { label: "COLETANDO ASSINATURAS ICP", color: "#0369a1", desc: "Coleta sequencial: todos os Inspetores → Coordenador → RT → Cliente. Cada assinatura sobre o hash do documento.", triggers: ["Todas as assinaturas coletadas → FINALIZADO"] },
+        { label: "FINALIZADO", color: "#1e293b", desc: "FOR-030 e FOR-031 assinados via ICP-Brasil. Tabela de rastreabilidade e QR Code publicados.", triggers: ["Estado terminal — cadeia de evidências auditável"] },
+        { label: "CANCELADA", color: "#94a3b8", desc: "Inspeção cancelada. Todos os registros preservados na trilha de auditoria.", triggers: ["Estado terminal"] },
       ]},
     ],
   },
   doclifecycle: {
-    title: "8. Ciclo de Vida de Documentos",
+    title: "10. Ciclo de Vida de Documentos",
     body: [
-      { type: "paragraph", text: "Todos os documentos são tratados como entidades versionadas e imutáveis. Nenhum documento aprovado pode ser sobrescrito — apenas novas versões (retificações) podem ser criadas." },
-      { type: "subtitle", text: "8.1 Tipos de Documentos" },
-      { type: "table", headers: ["Documento", "Gerado por", "Momento de Geração", "Assinaturas Necessárias"], rows: [
-        ["Demanda de Inspeção", "Gestora", "No início do projeto", "Gestora"],
-        ["Plano de Inspeção", "Coordenador", "Após criação da demanda", "Coordenador"],
-        ["Checklist de Inspeção", "Sistema (baseado no plano)", "Durante execução por cada inspetor", "Cada Inspetor (log sistêmico)"],
-        ["Relatório de Visita", "Sistema", "Após execução consolidada", "Todos os Inspetores + Coordenador (log)"],
-        ["Relatório Parcial", "Sistema", "Após validação RT", "Log sistêmico (Coord. + RT)"],
-        ["Relatório Final", "Sistema", "Após aprovação do Cliente + ICP-Brasil", "Todos Inspetores (ICP) + Coord. (ICP) + RT (ICP) + Cliente (ICP)"],
-        ["Certificado de Inspeção", "Sistema", "Após relatório final", "RT (ICP) + Cliente (ICP)"],
-      ]},
-      { type: "subtitle", text: "8.2 Estados de um Documento" },
+      { type: "paragraph", text: "Todos os documentos são entidades versionadas e imutáveis após aprovação. O status é sempre visível e determina quem pode editar e o que acontece a seguir." },
+      { type: "subtitle", text: "10.1 Estados de um Documento" },
       { type: "flow", steps: [
-        "RASCUNHO — documento em montagem pelo sistema ou pelo usuário",
-        "GERADO — compilação concluída, aguardando primeira assinatura ou log",
-        "EM VALIDAÇÃO — circulando pelo fluxo interno de aprovações",
-        "VALIDADO — aprovações internas concluídas (log sistêmico registrado)",
-        "ASSINADO ICP-BRASIL — assinaturas digitais ICP coletadas (apenas Relatório Final e Certificado)",
-        "PUBLICADO — disponível para partes autorizadas e/ou Portal de Rastreabilidade",
-        "RETIFICADO — versão anterior arquivada, substituída por nova versão",
+        "RASCUNHO — editável por quem criou, código já gerado pelo sistema",
+        "SUBMETIDO — travado para o inspetor, aguardando revisão do Coordenador",
+        "EM REVISÃO — editável apenas por Coordenador ou RT conforme a etapa",
+        "APROVADO — somente leitura, pronto para próxima etapa da cadeia",
+        "ASSINADO ICP-BRASIL — bloqueado e imutável, com hash SHA-256 do conteúdo",
+        "PUBLICADO — disponível no Portal de Rastreabilidade",
+        "RETIFICADO — versão anterior arquivada, nova versão criada com código incrementado",
       ]},
-      { type: "subtitle", text: "8.3 Versionamento" },
-      { type: "paragraph", text: "Cada documento possui identificador único (UUID), número de versão semântico (v1.0, v1.1, v2.0), hash de integridade (SHA-256), metadados de criação/modificação e referência ao documento anterior quando aplicável. Documentos na versão v2.0+ indicam ciclo de rejeição e retificação." },
+      { type: "subtitle", text: "10.2 Log de Auditoria por Documento" },
+      { type: "paragraph", text: "Cada documento mantém um log automático e imutável de todas as ações realizadas sobre ele." },
+      { type: "list", items: [
+        "Quem criou e quando",
+        "Cada alteração: quem fez, quando, o que mudou e qual versão foi gerada",
+        "Cada mudança de status com timestamp e IP de origem",
+        "Cada assinatura: signatário, nível, timestamp e hash do conteúdo assinado",
+        "Cada acesso ao documento por auditor externo",
+      ]},
+      { type: "subtitle", text: "10.3 Versionamento Semântico" },
+      { type: "paragraph", text: "V00 = primeira submissão. V01, V02... = revisões subsequentes. Qualquer edição após submissão obrigatoriamente gera nova versão — nunca sobrescreve. O número de versão faz parte do código do documento e é visível em todos os contextos." },
     ],
   },
   signatures: {
-    title: "9. Arquitetura de Assinaturas",
+    title: "11. Arquitetura de Assinaturas",
     body: [
-      { type: "paragraph", text: "O sistema implementa dois regimes distintos: validações sistêmicas (logs internos) e assinaturas digitais ICP-Brasil (validade jurídica plena). A assinatura ICP-Brasil é acionada exclusivamente após a aprovação do cliente." },
-      { type: "subtitle", text: "9.1 Regime 1 — Validações Sistêmicas (Fluxo Interno)" },
-      { type: "paragraph", text: "As etapas internas — submissão de cada inspetor, aprovação do coordenador e aprovação do RT — são registradas como logs de validação sistêmica. Formam trilha de auditoria imutável e rastreável, mas não têm validade jurídica de assinatura digital." },
+      { type: "paragraph", text: "O sistema opera com dois regimes distintos de assinatura, cada um adequado à fase do fluxo e ao nível de formalidade exigido." },
+      { type: "subtitle", text: "11.1 Regime 1 — Assinaturas de Processo (Fluxo Interno)" },
+      { type: "paragraph", text: "Coletadas durante o fluxo interno, antes da aprovação do cliente. São logs autenticados que formam a trilha de auditoria e têm validade interna, mas não constituem assinatura digital com validade jurídica ICP-Brasil." },
+      { type: "table", headers: ["Formulário", "Quem assina (regime interno)", "Momento"], rows: [
+        ["FOR-022 C", "Responsável Técnico", "Antes do planejamento"],
+        ["FOR-022 D", "Coordenador", "Antes do planejamento"],
+        ["FOR-023", "RT + Coordenador + Inspetores + Cliente", "Antes da execução"],
+        ["FOR-027", "Inspetor + Responsável Obra", "Durante execução (Obra/Operação)"],
+        ["FOR-028", "RT + Coordenador + Inspetores", "Após validação RT (log sistêmico)"],
+        ["FOR-029", "RT + Coordenador + Inspetor", "Quando NC identificada (log sistêmico)"],
+      ]},
+      { type: "subtitle", text: "11.2 Regime 2 — Assinaturas ICP-Brasil (Pós-Aprovação do Cliente)" },
+      { type: "highlight", text: "A aprovação do cliente no Portal + resposta às tratativas do FOR-029 são os gatilhos para o início do fluxo ICP-Brasil. A ordem de assinatura é fixa e o sistema só avança quando cada assinatura é coletada." },
       { type: "signature_levels", items: [
-        { level: "Log 1..N", name: "Submissão de cada Inspetor", actor: "Inspetores (todos)", type: "Log sistêmico autenticado", desc: "Cada inspetor gera um log ao submeter seu checklist. Registra identidade, especialidade, timestamp e hash dos dados." },
-        { level: "Log N+1", name: "Validação do Coordenador", actor: "Coordenador", type: "Log sistêmico autenticado", desc: "Confirma revisão técnica consolidada. Inclui carimbo de data/hora, IP de origem e identificador da sessão." },
-        { level: "Log N+2", name: "Validação do RT", actor: "Responsável Técnico (RT)", type: "Log sistêmico com credencial RT", desc: "Validação com credencial de RT registrada. Inclui parecer técnico consolidado de todas as especialidades." },
+        { level: "ICP 1..N", name: "Todos os Inspetores (em paralelo)", actor: "Inspetores", type: "ICP-Brasil", desc: "Cada inspetor assina FOR-030 confirmando responsabilidade técnica pela sua especialidade. O sistema libera todos simultaneamente." },
+        { level: "ICP N+1", name: "Coordenador", actor: "Coordenador", type: "ICP-Brasil", desc: "Assina FOR-030 após todos os inspetores. Confirma responsabilidade pela condução do processo." },
+        { level: "ICP N+2", name: "Responsável Técnico", actor: "RT", type: "ICP-Brasil", desc: "Assina FOR-030 e FOR-031. Confere validade técnica e legal ao laudo e ao certificado." },
+        { level: "ICP N+3", name: "Cliente / Contratante", actor: "Cliente", type: "ICP-Brasil", desc: "Assina FOR-030 e FOR-031. Confirmação final com validade jurídica plena." },
       ]},
-      { type: "subtitle", text: "9.2 Regime 2 — Assinaturas ICP-Brasil (Pós-Aprovação do Cliente)" },
-      { type: "highlight", text: "A aprovação do cliente é o gatilho exclusivo para o fluxo ICP-Brasil. Todos os inspetores assinam individualmente na ordem de execução, seguidos do Coordenador, RT e Cliente. O sistema só avança quando cada assinatura é coletada." },
-      { type: "signature_levels", items: [
-        { level: "ICP 1..N", name: "Assinatura de cada Inspetor", actor: "Inspetores (todos, em ordem)", type: "Assinatura Digital ICP-Brasil", desc: "Cada inspetor assina individualmente o Relatório Final, confirmando responsabilidade pela sua especialidade (ex: Geometria, Terraplenagem, Drenagem, Pavimentação). A ordem segue a sequência de execução." },
-        { level: "ICP N+1", name: "Assinatura do Coordenador", actor: "Coordenador", type: "Assinatura Digital ICP-Brasil", desc: "Assinatura após todos os inspetores. Confirma responsabilidade técnica pela condução do processo." },
-        { level: "ICP N+2", name: "Assinatura do RT", actor: "Responsável Técnico (RT)", type: "Assinatura Digital ICP-Brasil", desc: "Assinatura com credencial de RT. Confere validade técnica e legal ao laudo e ao certificado emitido." },
-        { level: "ICP N+3", name: "Assinatura do Cliente", actor: "Cliente", type: "Assinatura Digital ICP-Brasil", desc: "Assinatura final. Confirma ciência e aprovação do resultado. Gera documento com validade jurídica plena." },
-      ]},
-      { type: "subtitle", text: "9.3 Lógica de Validação e Integridade" },
-      { type: "list", items: [
-        "Cada assinatura ICP bloqueia edição do documento — qualquer alteração a invalida automaticamente",
-        "Assinaturas armazenadas com hash SHA-256 do conteúdo assinado",
-        "Timestamp via servidor de tempo confiável (NTP-sincronizado)",
-        "Cada signatário recebe confirmação por e-mail com recibo da operação",
-        "Trilha de auditoria de assinaturas é imutável e separada do documento",
-      ]},
+      { type: "subtitle", text: "11.3 Ordem de Serviço e Contrato de Inspeção" },
+      { type: "paragraph", text: "A Ordem de Serviço e o Contrato de Inspeção são assinados pelo Representante OIA e pelo Representante Contratante no momento da criação do projeto, antes de qualquer etapa de inspeção. O sistema armazena esses documentos e os referencia em todos os FORs subsequentes." },
     ],
   },
   traceability: {
-    title: "10. Portal de Rastreabilidade",
+    title: "12. Portal de Rastreabilidade",
     body: [
-      { type: "paragraph", text: "Ambiente seguro e somente leitura para auditores do INMETRO, ANTT e órgãos reguladores acessarem a cadeia completa de evidências de uma inspeção, sem necessidade de acesso ao sistema principal." },
-      { type: "subtitle", text: "10.1 Acesso ao Portal" },
+      { type: "paragraph", text: "Ambiente somente leitura para auditores do INMETRO, ANTT e órgãos reguladores. Expõe a cadeia completa de evidências com todos os FORs gerados na inspeção, equivalente a uma 'tabela de rastreabilidade de diploma' — mostrando o caminho completo percorrido pelo processo." },
+      { type: "subtitle", text: "12.1 O que o Portal entrega" },
       { type: "list", items: [
-        "Cada inspeção finalizada gera automaticamente um link único e rastreável",
-        "Um QR Code é gerado e impresso no Certificado de Inspeção",
-        "Acesso público: qualquer pessoa com o link verifica autenticidade básica",
-        "Acesso restrito: credencial de auditor cadastrado para ver detalhes completos",
-        "Logs de acesso registrados: quem acessou, quando e quais dados foram consultados",
+        "QR Code único impresso no FOR-031 (Certificado) — qualquer pessoa pode verificar autenticidade",
+        "Tabela de rastreabilidade: lista todos os FORs gerados, suas versões, signatários e datas",
+        "Verificação de integridade: hash SHA-256 de cada documento comparável em tempo real",
+        "Linha do tempo da inspeção: cada evento registrado com timestamp imutável",
+        "Acesso restrito para auditores: visão completa de checklists, evidências fotográficas e pareceres",
       ]},
-      { type: "subtitle", text: "10.2 Conteúdo Disponível" },
-      { type: "table", headers: ["Informação", "Acesso Público", "Acesso Auditor"], rows: [
-        ["Número e status do certificado", "✓", "✓"],
-        ["Data de emissão e validade", "✓", "✓"],
-        ["Nome do objeto inspecionado e cliente", "✓", "✓"],
-        ["Hash de integridade dos documentos", "✓", "✓"],
+      { type: "subtitle", text: "12.2 Conteúdo por Nível de Acesso" },
+      { type: "table", headers: ["Informação", "Acesso Público (QR/link)", "Acesso Auditor Credenciado"], rows: [
+        ["Status e número do certificado (FOR-031)", "✓", "✓"],
+        ["Tabela de rastreabilidade dos FORs", "✓", "✓"],
         ["Identidade de todos os signatários ICP-Brasil", "✓", "✓"],
-        ["Documentos completos (Relatório Final, Certificado)", "—", "✓"],
-        ["Checklists preenchidos por especialidade", "—", "✓"],
-        ["Evidências fotográficas por inspetor", "—", "✓"],
-        ["Trilha de auditoria completa", "—", "✓"],
-        ["Logs de validação sistêmica", "—", "✓"],
-        ["Histórico de versões e retificações", "—", "✓"],
+        ["Hash de integridade de cada documento", "✓", "✓"],
+        ["FOR-030 e FOR-031 completos", "—", "✓"],
+        ["FOR-028 e histórico de versões", "—", "✓"],
+        ["FOR-029 e tratativas do cliente", "—", "✓"],
+        ["FOR-032 (checklists) com evidências por especialidade", "—", "✓"],
+        ["FOR-027 (relatórios de visita) com fotos e GPS", "—", "✓"],
+        ["Log de auditoria completo de cada documento", "—", "✓"],
       ]},
-      { type: "subtitle", text: "10.3 Segurança e Imutabilidade" },
-      { type: "highlight", text: "Os dados exibidos são somente leitura e derivados de um repositório imutável separado do banco operacional. Qualquer adulteração é detectada pela divergência de hash SHA-256. O portal não expõe nenhuma API de escrita." },
+      { type: "highlight", text: "Segurança: o Portal é somente leitura, derivado de repositório imutável separado do banco operacional. Qualquer adulteração é detectada pela divergência de hash SHA-256. Nenhuma API de escrita é exposta." },
     ],
   },
   scenario: {
-    title: "11. Cenário de Exemplo Completo",
+    title: "13. Cenário de Exemplo Completo",
     body: [
-      { type: "paragraph", text: "Cenário realista com múltiplos inspetores por especialidade, demonstrando o ciclo completo incluindo rejeição pelo cliente e resubmissão." },
-      { type: "scenario", title: "Inspeção de Conformidade Estrutural — Edifício Comercial Torre Alpha", steps: [
+      { type: "paragraph", text: "Cenário Torre Alpha — Inspeção de Obra (PQ-13) com 4 inspetores concomitantes, demonstrando a geração de todos os FORs, tratamento de não conformidade e cadeia completa de assinaturas." },
+      { type: "scenario", title: "INS-2024-0891 — Inspeção de Obra — Edifício Torre Alpha (PQ-13)", steps: [
         { day: "Dia 1", actor: "Gestora (Carla)", actions: [
-          "Cria a demanda 'INS-2024-0891 — Torre Alpha'",
-          "Define: cliente Construtora BetaBuild, contrato CT-2024-112, normas NBR 6118:2014, prazo 10 dias",
-          "Designa 4 inspetores por especialidade: Carlos (Geometria), Ana P. (Terraplenagem), Murilo (Drenagem), Jael (Pavimentação)",
-          "Define ordem sequencial: Carlos → Ana P. → Murilo → Jael",
-          "Sistema notifica Coordenador Ana sobre o novo projeto",
+          "Cria demanda INS-2024-0891, seleciona tipo: Obra (PQ-13)",
+          "Upload: Carta convite, OS-5532025, Contrato, Proposta Técnica EPR-0012025, PER",
+          "Designa 4 inspetores: Carlos (GEO), Ana P. (TER), Murilo (DRE), Jael (PAV) — modo concomitante",
+          "Solicita emissão de ART para todos os inspetores",
+          "Sistema gera automaticamente: FOR-022 C (para RT) e FOR-022 D (para Coordenador)",
+          "Sistema gera código do projeto: EPR-0012025-5532025",
+        ]},
+        { day: "Dia 1 (tarde)", actor: "RT (Dr. Marcos) + Coordenador (Ana)", actions: [
+          "Dr. Marcos preenche e assina FOR-022 C: contrato tecnicamente viável, equipe adequada",
+          "Coordenador Ana preenche e assina FOR-022 D: documentação completa e aderente ao escopo",
         ]},
         { day: "Dia 2", actor: "Coordenador (Ana)", actions: [
-          "Acessa o projeto e seleciona a boneca 'Inspeção Estrutural Predial'",
-          "Personaliza o plano com 4 seções por especialidade, 42 itens no total",
-          "Configura regra: 'Trinca na estrutura = Sim' exige foto e campo de laudo",
-          "Publica o Plano — Carlos (Inspetor 1) é notificado para iniciar",
+          "Seleciona boneca 'Inspeção de Obra Estrutural' e personaliza por especialidade",
+          "Cria FOR-023 (Plano de Inspeção) — código gerado: EPR-PI-0012025-5532025-01-V00",
+          "FOR-023 enviado para assinatura de RT, Coordenador, 4 Inspetores e Cliente",
         ]},
-        { day: "Dia 3", actor: "Inspetor 1 (Carlos — Geometria)", actions: [
-          "Executa sua parte offline no subsolo, preenche 12 itens de geometria",
-          "Captura 8 fotos, registra coordenadas GPS",
-          "Submete ao recuperar sinal — sistema libera Ana P. (Inspetor 2)",
+        { day: "Dia 2 (tarde)", actor: "Cliente (BetaBuild)", actions: [
+          "Recebe FOR-023 no portal, revisa escopo e equipe, assina digitalmente",
+          "Inspetores liberados para execução concomitante",
         ]},
-        { day: "Dia 3 (tarde)", actor: "Inspetor 2 (Ana P. — Terraplenagem)", actions: [
-          "Recebe notificação, executa sua especialidade",
-          "Preenche 10 itens, captura 7 fotos",
-          "Submete — sistema libera Murilo (Inspetor 3)",
-        ]},
-        { day: "Dia 4", actor: "Inspetor 3 (Murilo — Drenagem) + Inspetor 4 (Jael — Pavimentação)", actions: [
-          "Murilo executa e submete sua especialidade (10 itens, 6 fotos)",
-          "Sistema libera Jael automaticamente",
-          "Jael executa e submete (10 itens, 6 fotos)",
-          "Sistema confirma 100% dos inspetores concluídos — notifica Coordenador Ana para validação",
+        { day: "Dias 3–4", actor: "4 Inspetores (em paralelo)", actions: [
+          "Carlos (GEO): preenche FOR-032 com 12 itens, FOR-027 com 8 fotos de campo — código: EPR-CL-0012025-5532025-01-GEO-V00",
+          "Ana P. (TER): preenche FOR-032 e FOR-027, 10 itens, 7 fotos",
+          "Murilo (DRE): identifica NC em item de drenagem — sistema gera automaticamente FOR-029 vinculado ao item — código: EPR-RN-0012025-5532025-01-DRE-V00",
+          "Jael (PAV): preenche FOR-032 e FOR-027, 10 itens, 6 fotos",
+          "Todos submetem — sistema consolida e notifica Coordenador",
         ]},
         { day: "Dia 5", actor: "Coordenador (Ana)", actions: [
-          "Revisa todos os 42 itens e 27 fotos de todos os inspetores",
-          "Identifica foto desfocada de Carlos (pilar P-07) — rejeita especificamente para Carlos",
-          "Carlos recebe notificação, retorna ao local, captura nova foto e resubmete",
-          "Ana aprova — avança para PENDENTE_VALIDAÇÃO_RT",
+          "Revisa todos os 4 conjuntos de FOR-032 + FOR-027",
+          "Rejeita FOR-027 de Carlos: foto do pilar P-07 desfocada",
+          "Carlos recebe notificação, retira nova foto, resubmete — sistema cria EPR-RV-...-GEO-V01",
+          "Coordenador aprova todos — assina FOR-028 — código: EPR-RP-0012025-5532025-01-V00",
         ]},
         { day: "Dia 5 (tarde)", actor: "RT (Dr. Marcos)", actions: [
-          "Revisa e emite parecer consolidado: 'Trinca superficial, sem risco. Monitoramento semestral'",
-          "Confirma com log sistêmico de RT",
-          "Sistema gera Relatório Parcial v1.0 consolidando todas as especialidades",
+          "Valida tecnicamente todas as especialidades",
+          "Assina FOR-028 — parecer: 'Trinca superficial, monitoramento semestral conforme NBR 6118:2014'",
+          "Sistema gera FOR-028 V00 com todas as evidências consolidadas",
+          "FOR-029 de Murilo também consolidado e assinado por RT + Coord. + Murilo",
         ]},
         { day: "Dia 6", actor: "Cliente (BetaBuild)", actions: [
-          "Acessa portal e revisa o relatório parcial",
-          "Solicita ajuste: 'Incluir referência à NBR 6118:2014 e prazo máximo para monitoramento'",
-          "Estado muda para EM_REVISÃO_CLIENTE",
+          "Recebe no portal: FOR-028 (para aprovar) + FOR-029 em anexo (para responder tratativas)",
+          "Preenche tratativas no FOR-029: 'Contrataremos empresa X para correção da drenagem em 30 dias'",
+          "Solicita ajuste no FOR-028: 'Incluir referência normativa e prazo no parecer da trinca'",
+          "Sistema cria FOR-028-V01 e retorna para Coordenador",
         ]},
         { day: "Dia 7", actor: "Coordenador (Ana) + RT (Dr. Marcos)", actions: [
-          "Dr. Marcos atualiza o parecer com referência normativa e prazo de 6 meses",
-          "Sistema versiona para Relatório Parcial v2.0",
-          "Fluxo reinicia: Coordenador aprova → RT aprova → v2.0 enviado ao cliente",
+          "RT atualiza parecer com referência à NBR 6118:2014 e prazo de 6 meses",
+          "Sistema gera EPR-RP-0012025-5532025-01-V01",
+          "Coordenador e RT assinam V01 — enviado novamente ao cliente",
         ]},
-        { day: "Dia 8", actor: "Cliente (BetaBuild)", actions: [
-          "Aprova a nova versão do relatório",
-          "Sistema dispara automaticamente o fluxo de assinatura ICP-Brasil",
-        ]},
-        { day: "Dia 8 (assinaturas ICP)", actor: "Todos os Signatários", actions: [
-          "Carlos (Geometria) assina via ICP-Brasil",
-          "Ana P. (Terraplenagem) assina via ICP-Brasil",
-          "Murilo (Drenagem) assina via ICP-Brasil",
-          "Jael (Pavimentação) assina via ICP-Brasil",
-          "Coordenador Ana assina via ICP-Brasil",
-          "RT Dr. Marcos assina via ICP-Brasil com credencial de RT",
-          "Representante da BetaBuild assina via ICP-Brasil",
-        ]},
-        { day: "Dia 8 (automático)", actor: "Sistema", actions: [
-          "Gera Relatório Final v1.0 com todas as 7 assinaturas ICP-Brasil",
-          "Gera Certificado CERT-2024-0891",
-          "Publica cadeia de evidências no Portal de Rastreabilidade",
-          "Gera QR Code único vinculado ao certificado",
-          "Notifica Carla (Gestora) sobre conclusão com métricas de SLA",
+        { day: "Dia 8", actor: "Cliente (BetaBuild) + Sistema", actions: [
+          "Cliente aprova FOR-028 V01",
+          "Sistema confirma: FOR-028 aprovado + FOR-029 com tratativas respondidas",
+          "Gatilho disparado: início do fluxo de assinaturas ICP-Brasil",
+          "Carlos, Ana P., Murilo e Jael assinam FOR-030 via ICP-Brasil (em paralelo)",
+          "Coordenador Ana assina FOR-030 via ICP-Brasil",
+          "RT Dr. Marcos assina FOR-030 e FOR-031 via ICP-Brasil",
+          "Cliente BetaBuild assina FOR-030 e FOR-031 via ICP-Brasil",
+          "Sistema gera FOR-031 (Certificado): código EPR-CI-0012025-5532025-01-V00 com QR Code",
+          "Tabela de rastreabilidade publicada no Portal — todos os 10 FORs vinculados e auditáveis",
         ]},
       ]},
-      { type: "highlight", text: "Resultado: Inspeção INS-2024-0891 concluída em 8 dias com 4 inspetores em execução sequencial. 1 ciclo de rejeição interna + 1 ciclo de rejeição do cliente. 2 versões de relatório parcial. Certificado CERT-2024-0891 com 7 assinaturas ICP-Brasil (4 inspetores + Coordenador + RT + Cliente). QR Code publicado no Portal de Rastreabilidade." },
+      { type: "highlight", text: "Resultado: INS-2024-0891 concluída em 8 dias (PQ-13 — Obra). 4 inspetores concomitantes. 1 NC identificada (FOR-029) com tratativa respondida pelo cliente. 1 ciclo de revisão no FOR-028. 10 formulários gerados com código automático. FOR-031 com 7 assinaturas ICP-Brasil. Tabela de rastreabilidade e QR Code publicados no Portal." },
     ],
   },
 };
@@ -355,75 +473,75 @@ const content = {
 const archSystems = [
   { id: "web", name: "Sistema Web", icon: "🖥️", color: "#4f46e5", desc: "Plataforma principal de gestão, configuração e validação. Utilizada por Gestora, Coordenador, RT e Inspetor.",
     modules: [
-      { id: "gestao", name: "Gestão de Projetos", color: "#4f46e5", actor: "Gestora", pages: [
-        { name: "Dashboard Geral", items: ["Visão geral de todas as inspeções","Filtros por status, inspetor, prazo, projeto","Alertas de SLA e pendências","Métricas de desempenho em tempo real"] },
-        { name: "Projetos", items: ["Lista de projetos","Criar novo projeto","Detalhes do projeto (contrato, escopo, normas)","Upload e gestão de contrato","Designar múltiplos inspetores por especialidade","Definir ordem sequencial de execução","Configurar alertas e prazos"] },
-        { name: "Demandas de Inspeção", items: ["Criar nova demanda","Lista de demandas","Detalhes e acompanhamento em tempo real","Cancelar demanda"] },
-        { name: "Relatórios Gerenciais", items: ["Exportar relatórios por período","Métricas de SLA","Histórico de inspeções finalizadas"] },
+      { id: "gestao", name: "Gestão de Projetos e Contratos", color: "#4f46e5", actor: "Gestora / Gestora de Contratos", pages: [
+        { name: "Dashboard Geral", items: ["Visão geral de todas as inspeções e seus estados","Filtros por status, inspetor, prazo, tipo de inspeção","Alertas de SLA, ARTs vencidas e pendências","Métricas de desempenho em tempo real"] },
+        { name: "Criar Projeto", items: ["Nome, código interno, cliente vinculado","Tipo de inspeção: Projeto (PQ-12), Obra (PQ-13) ou Operação (PQ-14)","Upload: OS, Contrato, Proposta Técnica/Comercial, Carta convite, Edital, PER","Designar inspetores por especialidade (modo concomitante)","Solicitar emissão de ART para cada inspetor","Definir prazos, SLAs e alertas automáticos"] },
+        { name: "Documentação Contratual", items: ["Repositório de documentos do projeto","Visualizar OS, Contrato, Proposta etc.","Controle de versão dos documentos contratuais","Download e compartilhamento autorizado"] },
+        { name: "Acompanhamento", items: ["Status em tempo real por etapa e por inspetor","Histórico de atividades do projeto","Alertas de atraso e SLA","Relatórios gerenciais exportáveis"] },
       ]},
       { id: "coord", name: "Coordenação de Inspeção", color: "#7c3aed", actor: "Coordenador", pages: [
-        { name: "Meus Projetos", items: ["Lista de projetos atribuídos","Notificações de novos projetos","Status de cada inspeção e inspetor"] },
-        { name: "Plano de Inspeção", items: ["Criar plano a partir de boneca/template","Selecionar boneca base","Personalizar seções e itens por especialidade","Confirmar ordem sequencial dos inspetores","Configurar campos obrigatórios e regras condicionais","Publicar plano"] },
-        { name: "Biblioteca de Bonecas", items: ["Lista de templates disponíveis","Criar nova boneca","Editar e versionar boneca","Clonar boneca"] },
-        { name: "Validação Técnica", items: ["Fila de inspeções para revisar","Revisor de checklists por inspetor/especialidade","Visualizador de evidências (fotos, GPS)","Aprovar consolidado ou rejeitar por inspetor específico","Solicitar complementação individual"] },
-        { name: "Minha Rede de Inspetores", items: ["Lista de inspetores vinculados","Histórico e desempenho por especialidade","SLAs da rede"] },
+        { name: "Meus Projetos", items: ["Lista de projetos atribuídos com status de cada FOR","Notificações de novas demandas e pendências de validação"] },
+        { name: "FOR-022 D", items: ["Formulário de Análise de Completeza da Documentação","Checklist de documentos necessários vs. recebidos","Assinar e submeter para liberar planejamento"] },
+        { name: "Plano de Inspeção (FOR-023)", items: ["Selecionar boneca base por tipo de inspeção","Personalizar seções e itens por especialidade","Configurar campos obrigatórios e regras condicionais","Visualizar inspetores designados e modo (concomitante)","Publicar — sistema notifica todos os signatários"] },
+        { name: "Biblioteca de Bonecas", items: ["Lista de templates por tipo (Projeto/Obra/Operação)","Criar, editar, versionar e clonar bonecas","Histórico de uso por projeto"] },
+        { name: "Validação Técnica", items: ["Fila de submissões por inspetor/especialidade","Visualizador de FOR-032 e FOR-027 por especialidade","Aprovar consolidado ou rejeitar para inspetor específico","Revisar e assinar FOR-028 e FOR-029"] },
       ]},
       { id: "rt", name: "Responsável Técnico", color: "#1d4ed8", actor: "RT", pages: [
-        { name: "Fila de Validação RT", items: ["Inspeções aprovadas pelo coordenador","Filtros por tipo, projeto e urgência"] },
-        { name: "Revisão Técnica", items: ["Visualizar checklists de todos os inspetores","Visualizar evidências por especialidade","Emitir parecer técnico consolidado","Aprovar com log sistêmico","Rejeitar com justificativa"] },
-        { name: "Histórico de Laudos", items: ["Todas as inspeções validadas","Busca por data, projeto ou inspetor","Download de pareceres emitidos"] },
+        { name: "FOR-022 C", items: ["Formulário de Análise Crítica de Contratos","Validar viabilidade técnica do escopo e equipe","Assinar e submeter para liberar planejamento"] },
+        { name: "Fila de Validação RT", items: ["Inspeções aprovadas pelo Coordenador aguardando RT","Filtros por tipo de inspeção, urgência e disciplina"] },
+        { name: "Revisão Técnica", items: ["Visualizar FOR-032 e FOR-027 por especialidade","Emitir parecer técnico consolidado","Assinar FOR-028, FOR-029, FOR-030 e FOR-031","Rejeitar com justificativa técnica detalhada"] },
+        { name: "Histórico de Laudos", items: ["Todas as inspeções validadas","Busca por data, tipo, projeto ou inspetor","Download de pareceres e FORs assinados"] },
       ]},
       { id: "inspetor_web", name: "Área do Inspetor (Web)", color: "#059669", actor: "Inspetor", pages: [
-        { name: "Minhas Inspeções", items: ["Lista de inspeções atribuídas","Status: aguardando liberação / em execução / concluído","Indicador da posição na fila sequencial"] },
-        { name: "Executar Inspeção", items: ["Formulário dinâmico do checklist da especialidade","Captura de fotos e vídeos","GPS manual ou automático","Auto-save","Submeter quando concluído"] },
-        { name: "Histórico", items: ["Inspeções concluídas por especialidade","Feedbacks e rejeições recebidas","Histórico de complementações"] },
+        { name: "Minhas Inspeções", items: ["Lista de inspeções com status por especialidade","Indicador de ART: válida / pendente / vencida","Notificações de liberação para execução"] },
+        { name: "Executar FOR-032 (Checklist)", items: ["Formulário dinâmico por especialidade","Marcar item como conforme / não conforme","NC marcada gera FOR-029 automaticamente com vínculo ao item","Capturar fotos, vídeos e medições","GPS automático por item","Auto-save contínuo — nunca perde dados"] },
+        { name: "FOR-027 (Relatório de Visita)", items: ["Disponível apenas para Obra e Operação","Registro da visita com data, hora e GPS","Upload de fotos e registros de campo","Assinar e submeter junto com FOR-032"] },
+        { name: "Histórico", items: ["FOR-032 e FOR-027 por inspeção","Feedbacks e rejeições recebidas","Versões anteriores dos documentos"] },
       ]},
     ],
   },
-  { id: "mobile", name: "App Mobile", icon: "📱", color: "#059669", desc: "Aplicativo iOS/Android para execução de inspeções em campo. Opera 100% offline com sincronização inteligente.",
+  { id: "mobile", name: "App Mobile", icon: "📱", color: "#059669", desc: "Execução de inspeções em campo. Opera 100% offline. Tipo Obra/Operação.",
     modules: [
       { id: "mobile_main", name: "App do Inspetor", color: "#059669", actor: "Inspetor", pages: [
-        { name: "Tela Inicial", items: ["Status de conectividade (offline/online)","Inspeções do dia e posição na fila sequencial","Pendências de sincronização","Notificações push de liberação"] },
-        { name: "Inspeções", items: ["Lista de inspeções disponíveis para execução","Indicador: aguardando liberação ou livre para iniciar","Download de nova inspeção para offline"] },
-        { name: "Executar Inspeção (Offline)", items: ["Checklist paginado com progresso visual","Tipos: texto, número, seleção, foto, GPS","Câmera integrada sem sair do checklist","GPS automático por item","Auto-save a cada resposta","Submeter ao recuperar conexão"] },
-        { name: "Sincronização", items: ["Fila de operações pendentes","Upload incremental de mídias","Histórico de sincronizações"] },
+        { name: "Tela Inicial", items: ["Status offline/online sempre visível","Inspeções liberadas para execução","Pendências de sincronização por FOR","Notificações push de liberação e rejeição"] },
+        { name: "FOR-032 Offline", items: ["Checklist da especialidade paginado com progresso","Tipos de resposta: texto, número, seleção, foto, GPS","Câmera integrada sem sair do checklist","NC dispara criação de FOR-029 no dispositivo","Auto-save a cada resposta","Submeter automaticamente ao recuperar conexão"] },
+        { name: "FOR-027 Offline", items: ["Registro de visita de campo","Fotos georreferenciadas com timestamp","Medições e anotações técnicas","Sincronização com queue prioritária"] },
+        { name: "Sincronização", items: ["Fila priorizada: metadados antes de mídias","Upload incremental de fotos e vídeos","Código do documento gerado pelo servidor após sync","Resolução de conflitos com feedback claro"] },
       ]},
     ],
   },
-  { id: "portal_cliente", name: "Portal do Cliente", icon: "🏢", color: "#b45309", desc: "Interface simplificada para o cliente revisar, aprovar ou solicitar ajustes em relatórios consolidados de todos os inspetores.",
+  { id: "portal_cliente", name: "Portal do Cliente", icon: "🏢", color: "#b45309", desc: "Interface para o cliente assinar o Plano de Inspeção, responder não conformidades e aprovar relatórios.",
     modules: [
-      { id: "cliente_main", name: "Portal do Cliente", color: "#b45309", actor: "Cliente", pages: [
-        { name: "Acesso", items: ["Login via link único por inspeção","Verificação de identidade simples"] },
-        { name: "Relatório Parcial", items: ["Visualização completa do relatório consolidado","Evidências por especialidade e inspetor","Parecer técnico do RT","Histórico de versões"] },
-        { name: "Aprovação / Rejeição", items: ["Botão de aprovação em destaque","Confirmação dupla antes de aprovar","Rejeitar com comentários estruturados","Histórico de interações"] },
-        { name: "Assinatura ICP-Brasil", items: ["Fluxo de assinatura digital ICP-Brasil","Confirmação de identidade","Recibo da operação por e-mail"] },
-        { name: "Documentos Finais", items: ["Download do Relatório Final","Download do Certificado","QR Code do Portal de Rastreabilidade"] },
+      { id: "cliente_main", name: "Portal do Cliente", color: "#b45309", actor: "Cliente / Contratante", pages: [
+        { name: "Acesso", items: ["Login via link único por inspeção","Sem necessidade de conta complexa","Verificação de identidade simples"] },
+        { name: "FOR-023 (Plano de Inspeção)", items: ["Visualização completa do plano","Escopo, metodologia, equipe e cronograma","Aprovação com assinatura (antes da execução)","Solicitação de ajuste com comentários"] },
+        { name: "FOR-029 (Não Conformidades)", items: ["Lista de NCs identificadas pelos inspetores","Vinculação: cada NC com foto e item do checklist de origem","Campo para preencher tratativas (ação corretiva prevista)","Prazo para resposta configurável pela Gestora"] },
+        { name: "FOR-028 (Relatório Parcial)", items: ["Visualização consolidada por especialidade","Parecer técnico do RT","Histórico de versões do relatório","Aprovar ou solicitar ajuste com comentário"] },
+        { name: "Assinatura Final ICP-Brasil", items: ["FOR-030 (Relatório Final) para assinar","FOR-031 (Certificado) para assinar","Fluxo ICP-Brasil com verificação de identidade","Recibo da operação por e-mail"] },
+        { name: "Documentos Finais", items: ["Download do FOR-030 (Relatório Final)","Download do FOR-031 (Certificado) com QR Code","Tabela de rastreabilidade de todos os FORs"] },
       ]},
     ],
   },
-  { id: "portal_rastreabilidade", name: "Portal de Rastreabilidade", icon: "🔎", color: "#0369a1", desc: "Ambiente somente leitura para auditores do INMETRO, ANTT e órgãos reguladores.",
+  { id: "portal_rastreabilidade", name: "Portal de Rastreabilidade", icon: "🔎", color: "#0369a1", desc: "Ambiente somente leitura para INMETRO, ANTT e auditores verificarem a cadeia completa de evidências.",
     modules: [
-      { id: "rastrear_publico", name: "Acesso Público", color: "#0369a1", actor: "Qualquer pessoa com link/QR", pages: [
-        { name: "Verificação de Certificado", items: ["Número e status do certificado","Data de emissão e validade","Nome do objeto inspecionado","Hash de integridade (SHA-256)","Identidade de todos os signatários ICP-Brasil","Verificação de autenticidade em tempo real"] },
+      { id: "rastrear_publico", name: "Verificação Pública (QR Code)", color: "#0369a1", actor: "Qualquer pessoa com QR Code / link", pages: [
+        { name: "Verificação de Certificado", items: ["Status e número do FOR-031","Tabela de rastreabilidade dos FORs gerados","Identidade dos signatários ICP-Brasil","Hash de integridade de cada documento","Verificação de autenticidade em tempo real"] },
       ]},
       { id: "rastrear_auditor", name: "Acesso Auditor Credenciado", color: "#0284c7", actor: "Auditor / INMETRO / ANTT", pages: [
-        { name: "Busca e Filtros", items: ["Busca por número de certificado","Filtro por CNPJ, período, inspetor ou especialidade","Filtro por tipo de inspeção e norma"] },
-        { name: "Cadeia de Evidências", items: ["Linha do tempo completa","Checklists e evidências por especialidade","Logs de validação sistêmica","Assinaturas ICP-Brasil verificáveis online"] },
-        { name: "Documentos Completos", items: ["Relatório Final","Certificado","Histórico de versões e retificações","Pareceres técnicos do RT"] },
-        { name: "Exportação", items: ["Relatório de auditoria em PDF","Exportação estruturada (JSON/XML)","Comparação de versões"] },
-        { name: "Painel Regulatório", items: ["Métricas agregadas de conformidade","Inspeções por período e região","Alertas de não-conformidades"] },
+        { name: "Busca e Filtros", items: ["Por número de certificado, CNPJ, período","Por tipo de inspeção (PQ-12/13/14)","Por inspetor, especialidade ou disciplina"] },
+        { name: "Cadeia de Evidências", items: ["Linha do tempo completa com todos os FORs","FOR-032 com evidências por especialidade","FOR-029 e tratativas do cliente","Logs de validação e assinaturas"] },
+        { name: "Documentos Completos", items: ["Acesso a todos os FORs da inspeção","Histórico de versões de cada documento","Pareceres técnicos do RT","Comparação entre versões"] },
+        { name: "Exportação", items: ["Relatório de auditoria em PDF","Tabela de rastreabilidade em JSON/XML","Exportação de evidências fotográficas por especialidade"] },
       ]},
     ],
   },
-  { id: "admin_system", name: "Administração do Sistema", icon: "⚙️", color: "#db2777", desc: "Painel administrativo para gestão de todos os usuários, permissões, entidades e configurações globais.",
+  { id: "admin_system", name: "Administração do Sistema", icon: "⚙️", color: "#db2777", desc: "Gestão de usuários, bonecas, configurações globais e parâmetros de codificação.",
     modules: [
       { id: "admin_main", name: "Painel Administrativo", color: "#db2777", actor: "Administrador", pages: [
-        { name: "Usuários", items: ["Listar, cadastrar, editar e inativar usuários","Definir papel e especialidade","Vincular inspetor a coordenador","Redefinir senha"] },
-        { name: "Inspetores", items: ["Cadastro: CREA/CAU, especialidades, localização","Disponibilidade e agenda","Histórico e indicadores de desempenho"] },
-        { name: "Coordenadores", items: ["Área de atuação","Rede de inspetores por especialidade","Histórico de projetos coordenados"] },
-        { name: "Responsáveis Técnicos", items: ["Registro profissional e especialidade","Validade do registro","Projetos vinculados"] },
-        { name: "Clientes e Auditores", items: ["Cadastro de clientes e auditores externos","Definir nível de acesso ao portal","Emitir credenciais","Logs de acesso"] },
-        { name: "Configurações Globais", items: ["Parâmetros de SLA","Templates de notificação","Regras de versionamento","Configurações ICP-Brasil","Backup e retenção de dados"] },
+        { name: "Usuários e Papéis", items: ["Cadastrar, editar e inativar usuários","Definir papel e especialidade por usuário","Vincular inspetor a coordenador","Controlar ARTs: upload, validade e alertas de vencimento"] },
+        { name: "Codificação de Documentos", items: ["Cadastrar siglas de clientes","Configurar tipos de documento (CL, RV, RP, RN, RF, CI)","Definir disciplinas e suas siglas (GEO, TER, DRE, PAV...)","Regras de sequencial por tipo e disciplina"] },
+        { name: "Configurações de Workflow", items: ["Parâmetros de SLA por etapa e tipo de inspeção","Templates de notificação (e-mail, push)","Regras de geração automática de FOR-029","Configurações de integração ICP-Brasil"] },
+        { name: "Clientes e Auditores", items: ["Cadastro de clientes (CNPJ, contato, representante)","Cadastro de auditores externos com escopo de acesso","Emitir e revogar credenciais de acesso ao portal"] },
       ]},
     ],
   },
@@ -434,6 +552,23 @@ function Badge({ text, color }) {
     <span style={{ background: color + "18", color, border: `1px solid ${color}40`, borderRadius: 4, padding: "2px 10px", fontSize: 12, fontWeight: 700 }}>
       {text}
     </span>
+  );
+}
+
+function CodeExample({ code, parts }) {
+  const colors = ["#4f46e5","#7c3aed","#1d4ed8","#059669","#b45309","#0369a1","#dc2626"];
+  return (
+    <div style={{ margin: "16px 0" }}>
+      <div style={{ background: "#1e293b", borderRadius: 8, padding: "16px 20px", marginBottom: 16, fontFamily: "monospace", fontSize: 18, fontWeight: 700, color: "#f8fafc", letterSpacing: 2, textAlign: "center" }}>{code}</div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {parts.map((p, i) => (
+          <div key={i} style={{ background: colors[i % colors.length] + "12", border: `1.5px solid ${colors[i % colors.length]}40`, borderRadius: 8, padding: "8px 12px", textAlign: "center" }}>
+            <div style={{ fontFamily: "monospace", fontWeight: 800, fontSize: 14, color: colors[i % colors.length] }}>{p.part}</div>
+            <div style={{ fontSize: 11, color: T.textMuted, marginTop: 3 }}>{p.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -449,7 +584,6 @@ function ArchInteractive() {
   const reset = () => { setSelSystem(null); setSelModule(null); setSelPage(null); };
   const pickSys = (id) => { setSelSystem(id); setSelModule(null); setSelPage(null); };
   const pickMod = (id) => { setSelModule(id); setSelPage(null); };
-
   const btnBase = { background: "none", border: "none", cursor: "pointer", padding: 0, fontSize: 14, fontWeight: 600 };
 
   return (
@@ -461,7 +595,6 @@ function ArchInteractive() {
           {selPage && <><span style={{ color: T.textMuted }}>/</span><button onClick={() => setSelPage(null)} style={{ ...btnBase, color: T.accent }}>{mod ? mod.name : ""}</button><span style={{ color: T.textMuted }}>/</span><span style={{ color: T.textSub, fontSize: 14 }}>{selPage}</span></>}
         </div>
       )}
-
       {!selSystem && (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
           {archSystems.map(s => (
@@ -481,7 +614,6 @@ function ArchInteractive() {
           ))}
         </div>
       )}
-
       {selSystem && !selModule && sys && (
         <div>
           <div style={{ background: sys.color + "10", border: `1.5px solid ${sys.color}30`, borderRadius: 10, padding: "14px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 12 }}>
@@ -510,7 +642,6 @@ function ArchInteractive() {
           </div>
         </div>
       )}
-
       {selModule && !selPage && mod && (
         <div>
           <div style={{ background: mod.color + "10", border: `1.5px solid ${mod.color}30`, borderRadius: 10, padding: "14px 16px", marginBottom: 20 }}>
@@ -535,7 +666,6 @@ function ArchInteractive() {
           </div>
         </div>
       )}
-
       {selPage && page && mod && (
         <div>
           <div style={{ background: mod.color + "10", border: `1.5px solid ${mod.color}30`, borderRadius: 10, padding: "14px 16px", marginBottom: 20 }}>
@@ -578,9 +708,9 @@ function OrgChart() {
         <line x1={65} y1={68} x2={455} y2={68} stroke="#cbd5e1" strokeWidth="1.5"/>
         {[65, 195, 325, 455].map((x, i) => <line key={i} x1={x} y1={68} x2={x} y2={82} stroke="#cbd5e1" strokeWidth="1.5"/>)}
         {[
-          { x: 5, label: ["Gestora de", "Projetos"], color: "#4f46e5" },
+          { x: 5, label: ["Gestora /", "Gest. Contratos"], color: "#4f46e5" },
           { x: 135, label: ["Coordenador", "de Inspeção"], color: "#7c3aed" },
-          { x: 265, label: ["Responsável", "Técnico"], color: "#1d4ed8" },
+          { x: 265, label: ["Responsável", "Técnico (RT)"], color: "#1d4ed8" },
           { x: 395, label: ["Auditor /", "Órgão Reg."], color: "#0369a1" },
         ].map((r, i) => (
           <g key={i}>
@@ -600,6 +730,34 @@ function OrgChart() {
   );
 }
 
+const SENHA = "houer_e_guidance";
+function TelaLogin({ onLogin }) {
+  const [input, setInput] = useState("");
+  const [erro, setErro] = useState(false);
+  const tentar = () => {
+    if (input === SENHA) { onLogin(); }
+    else { setErro(true); setInput(""); setTimeout(() => setErro(false), 2000); }
+  };
+  return (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", background: T.bg, fontFamily: "'Inter', system-ui, sans-serif" }}>
+      <div style={{ background: T.card, border: `1.5px solid ${T.cardBorder}`, borderRadius: 16, padding: "48px 40px", width: 360, boxShadow: "0 4px 24px rgba(0,0,0,0.08)", textAlign: "center" }}>
+        <div style={{ fontSize: 36, marginBottom: 16 }}>🔒</div>
+        <div style={{ fontSize: 11, color: T.accent, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 8 }}>Acesso Restrito</div>
+        <div style={{ fontSize: 18, color: T.text, fontWeight: 800, marginBottom: 6 }}>Sistema de Gestão de Inspeções</div>
+        <div style={{ fontSize: 13, color: T.textMuted, marginBottom: 32 }}>Documentação Técnica — Arquitetura de Produto</div>
+        <input type="password" placeholder="Digite a senha de acesso" value={input} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === "Enter" && tentar()}
+          style={{ width: "100%", padding: "12px 16px", fontSize: 14, borderRadius: 8, border: `1.5px solid ${erro ? "#ef4444" : T.cardBorder}`, outline: "none", boxSizing: "border-box", background: erro ? "#fef2f2" : "#f8fafc", color: T.text, marginBottom: 12, transition: "all 0.2s" }} />
+        {erro && <div style={{ fontSize: 13, color: "#ef4444", marginBottom: 12, fontWeight: 600 }}>Senha incorreta. Tente novamente.</div>}
+        <button onClick={tentar} style={{ width: "100%", padding: "12px", fontSize: 14, fontWeight: 700, background: T.accent, color: "#fff", border: "none", borderRadius: 8, cursor: "pointer" }}
+          onMouseEnter={e => e.currentTarget.style.opacity = "0.85"} onMouseLeave={e => e.currentTarget.style.opacity = "1"}>
+          Entrar
+        </button>
+        <div style={{ fontSize: 11, color: T.textMuted, marginTop: 24 }}>Houer © 2025 · Uso interno</div>
+      </div>
+    </div>
+  );
+}
+
 function renderContent(section) {
   const data = content[section];
   if (!data) return null;
@@ -608,15 +766,10 @@ function renderContent(section) {
       {data.body.map((block, i) => {
         if (block.type === "arch_interactive") return <ArchInteractive key={i} />;
         if (block.type === "org_chart") return <OrgChart key={i} />;
-        if (block.type === "paragraph") return (
-          <p key={i} style={{ color: T.textSub, lineHeight: 1.8, marginBottom: 18, fontSize: 15 }}>{block.text}</p>
-        );
-        if (block.type === "subtitle") return (
-          <h3 key={i} style={{ color: T.text, fontSize: 16, fontWeight: 700, marginTop: 28, marginBottom: 12, borderLeft: `3px solid ${T.accent}`, paddingLeft: 12 }}>{block.text}</h3>
-        );
-        if (block.type === "highlight") return (
-          <div key={i} style={{ background: T.highlight, border: `1px solid ${T.highlightBorder}`, borderRadius: 8, padding: 18, margin: "18px 0", color: T.highlightText, fontSize: 14, lineHeight: 1.8 }}>{block.text}</div>
-        );
+        if (block.type === "code_example") return <CodeExample key={i} code={block.code} parts={block.parts} />;
+        if (block.type === "paragraph") return <p key={i} style={{ color: T.textSub, lineHeight: 1.8, marginBottom: 18, fontSize: 15 }}>{block.text}</p>;
+        if (block.type === "subtitle") return <h3 key={i} style={{ color: T.text, fontSize: 16, fontWeight: 700, marginTop: 28, marginBottom: 12, borderLeft: `3px solid ${T.accent}`, paddingLeft: 12 }}>{block.text}</h3>;
+        if (block.type === "highlight") return <div key={i} style={{ background: T.highlight, border: `1px solid ${T.highlightBorder}`, borderRadius: 8, padding: 18, margin: "18px 0", color: T.highlightText, fontSize: 14, lineHeight: 1.8 }}>{block.text}</div>;
         if (block.type === "metrics") return (
           <div key={i} style={{ display: "flex", gap: 14, flexWrap: "wrap", margin: "24px 0" }}>
             {block.items.map((m, j) => (
@@ -629,24 +782,18 @@ function renderContent(section) {
         );
         if (block.type === "list") return (
           <ul key={i} style={{ margin: "14px 0", paddingLeft: 22 }}>
-            {block.items.map((item, j) => (
-              <li key={j} style={{ color: T.textSub, marginBottom: 10, lineHeight: 1.7, fontSize: 14 }}>{item}</li>
-            ))}
+            {block.items.map((item, j) => <li key={j} style={{ color: T.textSub, marginBottom: 10, lineHeight: 1.7, fontSize: 14 }}>{item}</li>)}
           </ul>
         );
         if (block.type === "table") return (
           <div key={i} style={{ overflowX: "auto", margin: "18px 0", borderRadius: 8, border: `1px solid ${T.cardBorder}`, boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-              <thead>
-                <tr>{block.headers.map((h, j) => <th key={j} style={{ background: T.tableHead, color: T.tableHeadText, padding: "12px 16px", textAlign: "left", borderBottom: `1px solid ${T.cardBorder}`, fontWeight: 700, fontSize: 13 }}>{h}</th>)}</tr>
-              </thead>
-              <tbody>
-                {block.rows.map((row, j) => (
-                  <tr key={j} style={{ borderBottom: `1px solid ${T.rowBorder}`, background: j % 2 === 0 ? "#ffffff" : "#fafafa" }}>
-                    {row.map((cell, k) => <td key={k} style={{ padding: "12px 16px", color: k === 0 ? T.text : T.textSub, fontSize: 14, fontWeight: k === 0 ? 600 : 400 }}>{cell}</td>)}
-                  </tr>
-                ))}
-              </tbody>
+              <thead><tr>{block.headers.map((h, j) => <th key={j} style={{ background: T.tableHead, color: T.tableHeadText, padding: "12px 16px", textAlign: "left", borderBottom: `1px solid ${T.cardBorder}`, fontWeight: 700, fontSize: 13 }}>{h}</th>)}</tr></thead>
+              <tbody>{block.rows.map((row, j) => (
+                <tr key={j} style={{ borderBottom: `1px solid ${T.rowBorder}`, background: j % 2 === 0 ? "#ffffff" : "#fafafa" }}>
+                  {row.map((cell, k) => <td key={k} style={{ padding: "12px 16px", color: k === 0 ? T.text : T.textSub, fontSize: 14, fontWeight: k === 0 ? 600 : 400 }}>{cell}</td>)}
+                </tr>
+              ))}</tbody>
             </table>
           </div>
         );
@@ -758,9 +905,7 @@ function renderContent(section) {
                 </div>
                 <div style={{ borderLeft: `2px solid ${T.cardBorder}`, paddingLeft: 14, flex: 1 }}>
                   <div style={{ fontSize: 14, color: T.text, fontWeight: 700, marginBottom: 6 }}>{step.actor}</div>
-                  {step.actions.map((a, k) => (
-                    <div key={k} style={{ fontSize: 13, color: T.textSub, marginBottom: 5, paddingLeft: 10, borderLeft: `2px solid ${T.cardBorder}`, lineHeight: 1.6 }}>• {a}</div>
-                  ))}
+                  {step.actions.map((a, k) => <div key={k} style={{ fontSize: 13, color: T.textSub, marginBottom: 5, paddingLeft: 10, borderLeft: `2px solid ${T.cardBorder}`, lineHeight: 1.6 }}>• {a}</div>)}
                 </div>
               </div>
             ))}
@@ -774,30 +919,25 @@ function renderContent(section) {
 
 export default function App() {
   const [active, setActive] = useState("summary");
+  const [logado, setLogado] = useState(false);
+  if (!logado) return <TelaLogin onLogin={() => setLogado(true)} />;
   return (
     <div style={{ display: "flex", height: "100vh", background: T.bg, fontFamily: "'Inter', system-ui, -apple-system, sans-serif", color: T.text, overflow: "hidden" }}>
       <div style={{ width: 280, flexShrink: 0, background: T.sidebar, borderRight: `1px solid ${T.sidebarBorder}`, overflowY: "auto", display: "flex", flexDirection: "column" }}>
         <div style={{ padding: "24px 20px 16px", borderBottom: `1px solid ${T.sidebarBorder}` }}>
           <div style={{ fontSize: 11, color: T.accent, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 6 }}>Documentação Técnica</div>
           <div style={{ fontSize: 15, color: T.text, fontWeight: 800, lineHeight: 1.4 }}>Sistema de Gestão de Inspeções</div>
-          <div style={{ fontSize: 12, color: T.textMuted, marginTop: 4 }}>Arquitetura de Produto v2.0</div>
+          <div style={{ fontSize: 12, color: T.textMuted, marginTop: 4 }}>Arquitetura de Produto v3.0</div>
         </div>
         <nav style={{ padding: "10px 0", flex: 1 }}>
           {sections.map(s => (
-            <button key={s.id} onClick={() => setActive(s.id)} style={{
-              display: "block", width: "100%", textAlign: "left",
-              padding: "11px 20px", fontSize: 13, fontWeight: active === s.id ? 700 : 500,
-              color: active === s.id ? T.accent : T.textSub,
-              background: active === s.id ? T.accentLight : "transparent",
-              border: "none", borderLeft: active === s.id ? `3px solid ${T.accent}` : "3px solid transparent",
-              cursor: "pointer", lineHeight: 1.5, transition: "all 0.15s",
-            }}>
+            <button key={s.id} onClick={() => setActive(s.id)} style={{ display: "block", width: "100%", textAlign: "left", padding: "11px 20px", fontSize: 13, fontWeight: active === s.id ? 700 : 500, color: active === s.id ? T.accent : T.textSub, background: active === s.id ? T.accentLight : "transparent", border: "none", borderLeft: active === s.id ? `3px solid ${T.accent}` : "3px solid transparent", cursor: "pointer", lineHeight: 1.5, transition: "all 0.15s" }}>
               {s.label}
             </button>
           ))}
         </nav>
         <div style={{ padding: 16, borderTop: `1px solid ${T.sidebarBorder}` }}>
-          <div style={{ fontSize: 11, color: T.textMuted, textAlign: "center" }}>Gerado por Claude · 2025</div>
+          <div style={{ fontSize: 11, color: T.textMuted, textAlign: "center" }}>Houer © 2025 · Uso interno</div>
         </div>
       </div>
       <div style={{ flex: 1, overflowY: "auto", padding: "36px 48px" }}>
